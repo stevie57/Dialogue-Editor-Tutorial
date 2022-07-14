@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -13,12 +14,14 @@ public class DialogueNode : BaseNode
     private Sprite _faceImage;
     private string _name = string.Empty;
     private DialogueFaceImageType _faceImageType;
+    private List<DialogueNodePort> _dialogueNodePorts = new List<DialogueNodePort>();
 
     public List<LanguageGeneric<string>> Texts { get => _texts; set => _texts = value; }
     public List<LanguageGeneric<AudioClip>> AudioClips { get => _audioClips; set => _audioClips = value; }
     public string Name { get => _name; set => _name = value; }
     public Sprite FaceImage => _faceImage;
     public DialogueFaceImageType FaceImageType { get => _faceImageType; set => _faceImageType = value; }
+    public List<DialogueNodePort> DialogueNodePorts { get => _dialogueNodePorts; set => _dialogueNodePorts = value; }
 
     private TextField texts_Field;
     private ObjectField audioClips_Field;
@@ -194,10 +197,34 @@ public class DialogueNode : BaseNode
         newPort.contentContainer.Add(deleteButton);
 
         dialogueNodePort.MyPort = newPort;
+        newPort.portName = String.Empty;
+
+        DialogueNodePorts.Add(newDialogueNodePort);
+
+        baseNode.outputContainer.Add(newPort);
+        baseNode.RefreshExpandedState();
+        baseNode.RefreshPorts();
+
+        return newPort;
     }
 
     private void DeletePort(BaseNode node, Port port)
     {
-        
+        DialogueNodePort tmp = DialogueNodePorts.Find(tmpPort => tmpPort.MyPort == port);
+        DialogueNodePorts.Remove(tmp);
+
+        IEnumerable<Edge> portEdge = _graphView.edges.ToList().Where(edge => edge.output == port);
+
+        if (portEdge.Any())
+        {
+            Edge edge = portEdge.First();
+            edge.input.Disconnect(edge);
+            edge.output.Disconnect(edge);
+            _graphView.RemoveElement(edge);
+        }
+
+        node.outputContainer.Remove(port);
+        node.RefreshExpandedState();
+        node.RefreshPorts();
     }
 }

@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//https://youtu.be/1MM0-sEexxI?t=1562
+//https://youtu.be/bWIJ2kOx_vo?t=715
 public class DialogueNode : BaseNode
 {
     private List<LanguageGeneric<string>> _texts = new List<LanguageGeneric<string>>();
@@ -94,7 +94,7 @@ public class DialogueNode : BaseNode
         };
         audioClips_Field.RegisterValueChangedCallback(value =>
         {
-            _audioClips.Find(audioClip => audioClip.LanguageType == editorWindow.LanguageType).LanguageGenericType = value.newValue as AudioClip;
+            _audioClips.Find(audioClip => audioClip.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue as AudioClip;
         });
         audioClips_Field.SetValueWithoutNotify(_audioClips.Find(audioClip => audioClip.LanguageType == editorWindow.LanguageType).LanguageGenericType);
         mainContainer.Add(audioClips_Field);
@@ -147,9 +147,34 @@ public class DialogueNode : BaseNode
         };
         button.clicked += () =>
         {
-
+            AddChoicePort(this);
         };
+        titleButtonContainer.Add(button);
+    }
 
+    public void ReloadLanguage()
+    {
+        texts_Field.RegisterValueChangedCallback(value =>
+        {
+            _texts.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue;
+        });
+        texts_Field.SetValueWithoutNotify(
+            _texts.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
+
+        audioClips_Field.RegisterValueChangedCallback(value =>
+        {
+            _audioClips.Find(audioClip => audioClip.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue as AudioClip;
+        });
+
+        foreach(DialogueNodePort nodePort in _dialogueNodePorts)
+        {
+            nodePort.TextField.RegisterValueChangedCallback(value =>
+            {
+                nodePort.TextLanguages.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue;
+            });
+            texts_Field.SetValueWithoutNotify(
+                nodePort.TextLanguages.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
+        }
     }
 
     private Port AddChoicePort(BaseNode baseNode, DialogueNodePort dialogueNodePort = null)
@@ -162,7 +187,7 @@ public class DialogueNode : BaseNode
 
         foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
         {
-            newDialogueNodePort.TextLanguage.Add(new LanguageGeneric<string> 
+            newDialogueNodePort.TextLanguages.Add(new LanguageGeneric<string> 
             { 
                 LanguageType = language,
                 LanguageGenericType = outputPortName
@@ -174,9 +199,9 @@ public class DialogueNode : BaseNode
             newDialogueNodePort.InputGUID = dialogueNodePort.InputGUID;
             newDialogueNodePort.OutputGUID = dialogueNodePort.OutputGUID;
 
-            foreach(LanguageGeneric<string> languageGeneric in dialogueNodePort.TextLanguage)
+            foreach(LanguageGeneric<string> languageGeneric in dialogueNodePort.TextLanguages)
             {
-                newDialogueNodePort.TextLanguage.Find(language => language.LanguageType == languageGeneric.LanguageType).LanguageGenericType = languageGeneric.LanguageGenericType;
+                newDialogueNodePort.TextLanguages.Find(language => language.LanguageType == languageGeneric.LanguageType).LanguageGenericType = languageGeneric.LanguageGenericType;
             }
         }
 
@@ -184,9 +209,9 @@ public class DialogueNode : BaseNode
         newDialogueNodePort.TextField = new TextField();
         newDialogueNodePort.TextField.RegisterValueChangedCallback(value =>
         {
-            newDialogueNodePort.TextLanguage.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue;
+            newDialogueNodePort.TextLanguages.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue;
         });
-        newDialogueNodePort.TextField.SetValueWithoutNotify(newDialogueNodePort.TextLanguage.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
+        newDialogueNodePort.TextField.SetValueWithoutNotify(newDialogueNodePort.TextLanguages.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
         newPort.contentContainer.Add(newDialogueNodePort.TextField);
 
         // Delete Button

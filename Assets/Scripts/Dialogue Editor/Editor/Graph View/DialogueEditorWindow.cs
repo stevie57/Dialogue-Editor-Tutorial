@@ -105,5 +105,7 @@ public class DialogueEditorWindow : EditorWindow
     private void Language(LanguageType language, ToolbarMenu toolbarMenu)
     {
         toolbarMenu.text = $"Language : {language.ToString()}";
+        _languageType = language;
+        _graphView.LanguageReload();
     }
 }

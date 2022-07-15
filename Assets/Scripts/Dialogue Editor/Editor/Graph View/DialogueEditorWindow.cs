@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -13,6 +12,8 @@ public class DialogueEditorWindow : EditorWindow
     private DialogueGraphView _graphView;
     private ToolbarMenu _toolbarMenu;
     private Label DialogueContainerName;
+    private GraphSaveLoadUtility _saveAndLoad;
+
     private LanguageType _languageType = LanguageType.English;
     public LanguageType LanguageType { get => _languageType; set => _languageType = value; }
 
@@ -26,7 +27,7 @@ public class DialogueEditorWindow : EditorWindow
             DialogueEditorWindow window = (DialogueEditorWindow) GetWindow(typeof(DialogueEditorWindow));
             window.titleContent = new GUIContent("Dialogue Editor");
             window._currentDialogueContainer = item as DialogueContainerSO;
-            window.minSize = new Vector2(500, 250);
+            window.minSize = new Vector2(500, 250);            
             window.Load();
         }
 
@@ -50,6 +51,7 @@ public class DialogueEditorWindow : EditorWindow
         _graphView = new DialogueGraphView(this);
         _graphView.StretchToParentSize();
         rootVisualElement.Add(_graphView);
+        _saveAndLoad = new GraphSaveLoadUtility(_graphView);
     }
 
     private void GenerateToolBar()
@@ -64,7 +66,7 @@ public class DialogueEditorWindow : EditorWindow
         toolbar.Add(saveBtn);
 
         Button loadBtn = new Button() { text = "Load" };
-        saveBtn.clicked += Load;
+        loadBtn.clicked += Load;
         toolbar.Add(loadBtn);
 
         //dropdown menu names
@@ -89,7 +91,16 @@ public class DialogueEditorWindow : EditorWindow
 
     private void Save()
     {
-        Debug.Log($"Save");
+        if (_currentDialogueContainer == null) 
+        {
+            EditorUtility.DisplayDialog("Dialogue Save Error", "No Dialogue Container to save with !", "OK");
+            return;
+        }
+        else
+        {
+            Debug.Log($"Saved graph !");
+            _saveAndLoad.Save(_currentDialogueContainer);
+        }
     }
 
     private void Load()
@@ -99,6 +110,7 @@ public class DialogueEditorWindow : EditorWindow
         {
             Language(LanguageType.English, _toolbarMenu);
             DialogueContainerName.text = $"Name: {_currentDialogueContainer.name}";
+            _saveAndLoad.Load(_currentDialogueContainer);
         }
     }
 

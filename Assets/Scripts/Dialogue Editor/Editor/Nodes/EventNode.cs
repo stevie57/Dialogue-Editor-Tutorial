@@ -15,6 +15,7 @@ public class EventNode : BaseNode
     {
 
     }
+
     public EventNode(Vector2 position, DialogueEditorWindow editorWindow, DialogueGraphView graphView )
     {
         _editorWindow = editorWindow;
@@ -40,8 +41,12 @@ public class EventNode : BaseNode
         });
         _objectField.SetValueWithoutNotify(_dialogueEvent);
 
-        
-
         mainContainer.Add(_objectField);
+    }
+
+    override
+    public void LoadValueInToField()
+    {
+        _objectField.SetValueWithoutNotify(_dialogueEvent);
     }
 }

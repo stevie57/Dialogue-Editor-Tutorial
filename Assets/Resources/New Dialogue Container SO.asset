@@ -12,3 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6795ecbafcc1143a76f966e9cbcf3d, type: 3}
   m_Name: New Dialogue Container SO
   m_EditorClassIdentifier: 
+  NodeLinkDatas:
+  - BaseNodeGUID: 345faf1f-5ad1-49b5-b895-cdf8328cbd98
+    TargetNodeGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+  - BaseNodeGUID: 506b2176-962b-47cc-a380-f40157487429
+    TargetNodeGUID: 31570c92-4707-4566-9c6e-24205e9728ac
+  - BaseNodeGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+    TargetNodeGUID: 506b2176-962b-47cc-a380-f40157487429
+  - BaseNodeGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+    TargetNodeGUID: d108cb4e-51aa-4224-86a6-ccc0dce7f087
+  - BaseNodeGUID: d108cb4e-51aa-4224-86a6-ccc0dce7f087
+    TargetNodeGUID: 31570c92-4707-4566-9c6e-24205e9728ac
+  StartNodeDatas:
+  - SavedNodeGUID: 345faf1f-5ad1-49b5-b895-cdf8328cbd98
+    Position: {x: 45, y: 195}
+  DialogueNodeDatas:
+  - SavedNodeGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+    Position: {x: 293, y: 59}
+    DialogueNodePorts:
+    - InputGUID: 506b2176-962b-47cc-a380-f40157487429
+      OutputGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+    - InputGUID: d108cb4e-51aa-4224-86a6-ccc0dce7f087
+      OutputGUID: 4237d1bf-a827-45e6-8f34-6243cee8bef2
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 0
+    Name: 222
+  - SavedNodeGUID: d108cb4e-51aa-4224-86a6-ccc0dce7f087
+    Position: {x: 555, y: 159}
+    DialogueNodePorts:
+    - InputGUID: 31570c92-4707-4566-9c6e-24205e9728ac
+      OutputGUID: d108cb4e-51aa-4224-86a6-ccc0dce7f087
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 0
+    Name: 22
+  EventNodeDatas:
+  - SavedNodeGUID: 506b2176-962b-47cc-a380-f40157487429
+    Position: {x: 510, y: -6}
+    DialogueEventSO: {fileID: 0}
+  EndNodeDatas:
+  - SavedNodeGUID: 31570c92-4707-4566-9c6e-24205e9728ac
+    Position: {x: 780, y: 124}
+    EndNodeType: 0

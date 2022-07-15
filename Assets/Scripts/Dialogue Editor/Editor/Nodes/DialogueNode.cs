@@ -19,9 +19,9 @@ public class DialogueNode : BaseNode
     public List<LanguageGeneric<string>> Texts { get => _texts; set => _texts = value; }
     public List<LanguageGeneric<AudioClip>> AudioClips { get => _audioClips; set => _audioClips = value; }
     public string Name { get => _name; set => _name = value; }
-    public Sprite FaceImage => _faceImage;
     public DialogueFaceImageType FaceImageType { get => _faceImageType; set => _faceImageType = value; }
     public List<DialogueNodePort> DialogueNodePorts { get => _dialogueNodePorts; set => _dialogueNodePorts = value; }
+    public Sprite FaceImage { get => _faceImage; set => _faceImage = value; }
 
     private TextField texts_Field;
     private ObjectField audioClips_Field;
@@ -105,7 +105,7 @@ public class DialogueNode : BaseNode
         label_name.AddToClassList("Label");
         mainContainer.Add(label_name);
 
-        name_Field = new TextField("Name");
+        name_Field = new TextField("");
         name_Field.RegisterValueChangedCallback(value =>
         {
             _name = value.newValue;
@@ -113,21 +113,21 @@ public class DialogueNode : BaseNode
         name_Field.SetValueWithoutNotify(_name);
         name_Field.AddToClassList("TextName");
         mainContainer.Add(name_Field);
+
+        //name_Field = new TextField("Name");
+        //name_Field.RegisterValueChangedCallback(value =>
+        //{
+        //    _name = value.newValue;
+        //});
+        //name_Field.SetValueWithoutNotify(_name);
+        //name_Field.AddToClassList("TextName");
+        //mainContainer.Add(name_Field);
 
         // Text Box
         Label lable_texts = new Label("Text Box");
         lable_texts.AddToClassList("label_texts");
         lable_texts.AddToClassList("Label");
         mainContainer.Add(lable_texts);
-
-        name_Field = new TextField("Name");
-        name_Field.RegisterValueChangedCallback(value =>
-        {
-            _name = value.newValue;
-        });
-        name_Field.SetValueWithoutNotify(_name);
-        name_Field.AddToClassList("TextName");
-        mainContainer.Add(name_Field);
 
         // Text Field
         texts_Field = new TextField(string.Empty);
@@ -177,9 +177,24 @@ public class DialogueNode : BaseNode
         }
     }
 
-    private Port AddChoicePort(BaseNode baseNode, DialogueNodePort dialogueNodePort = null)
+    override
+    public void LoadValueInToField()
+    {
+        texts_Field.SetValueWithoutNotify(_texts.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
+
+        audioClips_Field.SetValueWithoutNotify(_audioClips.Find(language => language.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
+
+        faceImage_Field.SetValueWithoutNotify(_faceImage);
+
+        faceImageType_field.SetValueWithoutNotify(_faceImageType);
+
+        name_Field.SetValueWithoutNotify(_name);
+    }
+
+    public Port AddChoicePort(BaseNode baseNode, DialogueNodePort dialogueNodePort = null)
     {
         Port newPort = GetPortInstance(Direction.Output);
+
         int outputPortCount = baseNode.outputContainer.Query("connector").ToList().Count;
         string outputPortName = $"Choice {outputPortCount + 1}";
 
@@ -221,7 +236,7 @@ public class DialogueNode : BaseNode
         };
         newPort.contentContainer.Add(deleteButton);
 
-        dialogueNodePort.MyPort = newPort;
+        newDialogueNodePort.MyPort = newPort;
         newPort.portName = String.Empty;
 
         DialogueNodePorts.Add(newDialogueNodePort);

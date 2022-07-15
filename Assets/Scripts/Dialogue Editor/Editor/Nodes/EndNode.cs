@@ -40,5 +40,11 @@ public class EndNode : BaseNode
         _enumField.SetValueWithoutNotify(_endNodeType);
 
         mainContainer.Add(_enumField);
-    } 
+    }
+
+    override
+    public void LoadValueInToField()
+    {
+        _enumField.SetValueWithoutNotify(_endNodeType);
+    }
 }

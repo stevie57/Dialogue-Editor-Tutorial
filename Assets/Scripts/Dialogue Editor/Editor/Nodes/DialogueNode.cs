@@ -172,7 +172,7 @@ public class DialogueNode : BaseNode
             {
                 nodePort.TextLanguages.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType = value.newValue;
             });
-            texts_Field.SetValueWithoutNotify(
+            nodePort.TextField.SetValueWithoutNotify(
                 nodePort.TextLanguages.Find(text => text.LanguageType == _editorWindow.LanguageType).LanguageGenericType);
         }
     }

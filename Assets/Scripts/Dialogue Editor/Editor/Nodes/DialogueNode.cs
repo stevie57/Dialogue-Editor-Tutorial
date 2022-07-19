@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//https://youtu.be/bWIJ2kOx_vo?t=715
+//https://youtu.be/AA6UqzXTk1c?t=775
 public class DialogueNode : BaseNode
 {
     private List<LanguageGeneric<string>> _texts = new List<LanguageGeneric<string>>();

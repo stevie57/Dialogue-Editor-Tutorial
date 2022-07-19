@@ -9,10 +9,13 @@ public class DialogueTalkZone : MonoBehaviour
     [SerializeField] private KeyCode talkKey = KeyCode.E;
     [SerializeField] private Text keyInputText;
 
+    private DialogueTalk _dialogueTalk;
+
     private void Awake()
     {
         speechBubble.SetActive(false);
         keyInputText.text = talkKey.ToString();
+        _dialogueTalk = GetComponent<DialogueTalk>();
     }
 
     void Update()
@@ -20,7 +23,8 @@ public class DialogueTalkZone : MonoBehaviour
         if(Input.GetKeyDown(talkKey) && speechBubble.activeSelf)
         {
             // TODO: Start Dialogue.
-            Debug.Log("Start Dialouge");
+            //Debug.Log("Start Dialouge");
+            _dialogueTalk.StartDialogue();
         }
     }
 

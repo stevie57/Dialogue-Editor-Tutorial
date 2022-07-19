@@ -16,9 +16,11 @@ MonoBehaviour:
   - BaseNodeGUID: 07a7ea98-e0b0-475d-bff0-75a4275f69ae
     TargetNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
   - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
-    TargetNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
-  - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
     TargetNodeGUID: ce87b45c-9759-45ea-a979-756c30e560b4
+  - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+    TargetNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+  - BaseNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+    TargetNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
   StartNodeDatas:
   - SavedNodeGUID: 07a7ea98-e0b0-475d-bff0-75a4275f69ae
     Position: {x: 117, y: 237}
@@ -26,7 +28,7 @@ MonoBehaviour:
   - SavedNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
     Position: {x: 340, y: 125}
     DialogueNodePorts:
-    - InputGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
+    - InputGUID: 827ba680-3d43-47fd-97b7-843be297d21f
       OutputGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
       TextLanguages:
       - LanguageType: 0
@@ -53,11 +55,34 @@ MonoBehaviour:
       LanguageGenericType: 1
     - LanguageType: 1
       LanguageGenericType: 2
+  - SavedNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+    Position: {x: 648, y: -70}
+    DialogueNodePorts:
+    - InputGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
+      OutputGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: Choice 1
+      - LanguageType: 1
+        LanguageGenericType: Choice 1
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 0
+    AudioClips:
+    - LanguageType: 0
+      LanguageGenericType: {fileID: 0}
+    - LanguageType: 1
+      LanguageGenericType: {fileID: 0}
+    Name: 
+    TextType:
+    - LanguageType: 0
+      LanguageGenericType: 
+    - LanguageType: 1
+      LanguageGenericType: 
   EventNodeDatas: []
   EndNodeDatas:
-  - SavedNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
-    Position: {x: 626, y: 77}
-    EndNodeType: 0
   - SavedNodeGUID: ce87b45c-9759-45ea-a979-756c30e560b4
     Position: {x: 669, y: 208}
+    EndNodeType: 0
+  - SavedNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
+    Position: {x: 934, y: 28}
     EndNodeType: 0

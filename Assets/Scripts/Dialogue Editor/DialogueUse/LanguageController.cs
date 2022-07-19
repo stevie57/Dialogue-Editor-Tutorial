@@ -8,6 +8,8 @@ public class LanguageController : MonoBehaviour
 
     private static LanguageController _instance;
     public static LanguageController Instance { get => _instance;}
+    public LanguageType Language { get => _language; set => _language = value; }
+
     private void Awake()
     {
         if (_instance == null)

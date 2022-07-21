@@ -126,7 +126,7 @@ public class GraphSaveLoadUtility
             AudioClips = node.AudioClips,
             DialogueFaceImageType = node.FaceImageType,
             Sprite = node.FaceImage,
-            DialogueNodePorts = node.DialogueNodePorts,            
+            DialogueNodePorts = new List<DialogueNodePort>(node.DialogueNodePorts),            
         };
 
         // going through each dialogue node port and checking connected edges
@@ -172,12 +172,20 @@ public class GraphSaveLoadUtility
             DialogueNode tempNode = _graphView.CreateDialogue(node.Position);
             tempNode.NodeGUID = node.SavedNodeGUID;
             tempNode.Name = node.Name;
-            tempNode.Texts = node.TextType;
             tempNode.FaceImageType = node.DialogueFaceImageType;
             tempNode.FaceImage = node.Sprite;
-            tempNode.AudioClips = node.AudioClips;
 
-            foreach(DialogueNodePort port in node.DialogueNodePorts)
+            foreach(LanguageGeneric<string> languageGeneric in node.TextType)
+            {
+                tempNode.Texts.Find(language => language.LanguageType == languageGeneric.LanguageType).LanguageGenericType = languageGeneric.LanguageGenericType; ;
+            }
+
+            foreach (LanguageGeneric<AudioClip> languageGeneric in node.AudioClips)
+            {
+                tempNode.AudioClips.Find(language => language.LanguageType == languageGeneric.LanguageType).LanguageGenericType = languageGeneric.LanguageGenericType; ;
+            }
+
+            foreach (DialogueNodePort port in node.DialogueNodePorts)
             {
                 tempNode.AddChoicePort(tempNode, port);
             }

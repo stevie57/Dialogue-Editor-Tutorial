@@ -49,14 +49,17 @@ public class DialogueTalk : DialogueGetData
 
     private void RunNode(DialogueNodeData nodeData)
     {
-        _lastDialogueNodeData = _currentDialogueNodeData;
-        _currentDialogueNodeData = nodeData;
+        if(_currentDialogueNodeData != nodeData)
+        {
+            _lastDialogueNodeData = _currentDialogueNodeData;
+            _currentDialogueNodeData = nodeData;
+        }
 
         _dialogueController.SetText(
             _currentDialogueNodeData.Name,
             _currentDialogueNodeData.TextType.Find(text => text.LanguageType == LanguageController.Instance.Language).LanguageGenericType);
-        _dialogueController.SetImage(_currentDialogueNodeData.Sprite, _currentDialogueNodeData.DialogueFaceImageType);
         
+        _dialogueController.SetImage(_currentDialogueNodeData.Sprite, _currentDialogueNodeData.DialogueFaceImageType);      
         MakeButtons(_currentDialogueNodeData.DialogueNodePorts);
     }
 

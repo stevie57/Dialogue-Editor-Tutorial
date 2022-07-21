@@ -19,6 +19,7 @@ public class SaveCSV
     private void MakeHeader()
     {
         List<string> headerText = new List<string>();
+        headerText.Add(idName);
     }
 
     private void VerifyDirectory()

@@ -1,18 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class SaveCSV : MonoBehaviour
+public class SaveCSV
 {
-    // Start is called before the first frame update
-    void Start()
+    public string csvDirectoryName = "";
+    private string csvFileName = "";
+    private string csvSeperator = ",";
+    private string[] csvHeader;
+    private string idName = "GUID ID";
+
+    public void Save()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void MakeHeader()
     {
-        
+        List<string> headerText = new List<string>();
+    }
+
+    private void VerifyDirectory()
+    {
+        string directory = GetDirectoryPath();
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+    }
+
+    private string GetDirectoryPath()
+    {
+        return $"{Application.dataPath}/{csvDirectoryName}";
+    }
+
+    private string GetFilePath()
+    {
+        return $"{GetDirectoryPath()}/{csvFileName}";
     }
 }

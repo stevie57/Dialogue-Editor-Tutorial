@@ -9,7 +9,7 @@ namespace StevieDev.DialogueEditor
     {
         public void UpdateLanguage()
         {
-            List<DialogueContainerSO> dialogueContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+            List<DialogueContainerSO> dialogueContainers = Helper.FindAllDialogueContainerSO();
             foreach (DialogueContainerSO dialogueContainer in dialogueContainers)
             {
                 foreach (DialogueNodeData nodeData in dialogueContainer.DialogueNodeDatas)

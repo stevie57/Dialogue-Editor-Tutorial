@@ -52,8 +52,8 @@ namespace StevieDev.DialogueEditor
         /// </summary>
         public void ReloadLanguage()
         {
-            List<DialogueNode> dialogeNodes = nodes.ToList().Where(node => node is DialogueNode).Cast<DialogueNode>().ToList();
-            foreach (DialogueNode node in dialogeNodes)
+            List<BaseNode> allNodes = nodes.ToList().Where(node => node is BaseNode).Cast<BaseNode>().ToList();
+            foreach (BaseNode node in allNodes)
             {
                 node.ReloadLanguage();
             }

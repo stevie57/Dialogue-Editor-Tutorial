@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -61,11 +61,28 @@ namespace StevieDev.DialogueEditor
         public List<LanguageGeneric<string>> TextLanguages;
     }
 
+    #region Event Node
     [System.Serializable]
     public class EventNodeData : BaseNodeData
     {
+        public List<EventScriptableObjectData> EventScriptableObjectDatas;
+        public List<EventStringIdData> EventStringIdDatas;
+    }
+
+    [System.Serializable]
+    public class EventStringIdData
+    {
+        public string stringEvent;
+        public int idNumber;
+    }
+
+    [System.Serializable]
+    public class EventScriptableObjectData
+    {
         public DialogueEventSO DialogueEventSO;
     }
+
+    #endregion
 
     [System.Serializable]
     public class EndNodeData : BaseNodeData
@@ -86,7 +103,6 @@ namespace StevieDev.DialogueEditor
         public string PortGUID;
         public string InputGUID;
         public string OutputGUID;
-        public Port MyPort;
         public TextField TextField;
         public List<LanguageGeneric<string>> TextLanguages = new List<LanguageGeneric<string>>();
     }

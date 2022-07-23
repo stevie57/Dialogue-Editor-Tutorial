@@ -17,7 +17,7 @@ namespace StevieDev.DialogueEditor
 
         public void Save()
         {
-            List<DialogueContainerSO> dialogeContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+            List<DialogueContainerSO> dialogeContainers = Helper.FindAllDialogueContainerSO();
 
             CreateFile();
 
@@ -28,7 +28,7 @@ namespace StevieDev.DialogueEditor
                     List<string> TextLanguages = new List<string>();
 
                     TextLanguages.Add(nodeData.SavedNodeGUID);
-                    //TextLanguages.Add(nodeData.Name);
+                    TextLanguages.Add(dialogeContainer.name);
 
                     foreach (LanguageType languageType in ((LanguageType[])Enum.GetValues(typeof(LanguageType))))
                     {
@@ -43,7 +43,7 @@ namespace StevieDev.DialogueEditor
                         TextLanguages = new List<string>();
 
                         TextLanguages.Add(nodePorts.PortGUID);
-                        //TextLanguages.Add(dialogueContainer.);
+                        TextLanguages.Add(dialogeContainer.name);
 
                         foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
                         {
@@ -99,7 +99,7 @@ namespace StevieDev.DialogueEditor
         {
             List<string> headerText = new List<string>();
             headerText.Add(idName);
-            //headerText.Add(dialogueName);
+            headerText.Add(dialogueName);
 
             foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
             {

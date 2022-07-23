@@ -43,5 +43,10 @@ namespace StevieDev.DialogueEditor
         {
 
         }
+
+        public virtual void ReloadLanguage()
+        {
+
+        }
     }
 }

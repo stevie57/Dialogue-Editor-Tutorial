@@ -38,14 +38,14 @@ MonoBehaviour:
         LanguageGenericType: node2 choice1
       - LanguageType: 1
         LanguageGenericType: Continue
-    Sprite: {fileID: 0}
+    FaceImage: {fileID: 0}
     DialogueFaceImageType: 0
     AudioClips:
     - LanguageType: 0
       LanguageGenericType: {fileID: 0}
     - LanguageType: 1
       LanguageGenericType: {fileID: 0}
-    Name: Node2
+    CharacterName: 
     TextLanguages:
     - LanguageType: 0
       LanguageGenericType: node2englishtext
@@ -70,14 +70,14 @@ MonoBehaviour:
         LanguageGenericType: node1 choice2
       - LanguageType: 1
         LanguageGenericType: Continue
-    Sprite: {fileID: 0}
+    FaceImage: {fileID: 0}
     DialogueFaceImageType: 0
     AudioClips:
     - LanguageType: 0
       LanguageGenericType: {fileID: 0}
     - LanguageType: 1
       LanguageGenericType: {fileID: 0}
-    Name: Node1
+    CharacterName: 
     TextLanguages:
     - LanguageType: 0
       LanguageGenericType: node1englishtext

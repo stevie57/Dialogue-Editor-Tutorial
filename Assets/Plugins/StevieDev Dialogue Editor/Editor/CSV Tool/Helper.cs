@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace StevieDev.DialogueEditor
@@ -16,8 +17,8 @@ namespace StevieDev.DialogueEditor
 
             foreach (string directory in directories)
             {
-                string directoryPath = directory.Substring(resourcesPath.Length + 1);
-                T[] result = Resources.LoadAll(directoryPath, typeof(T)).Cast<T>().ToArray();
+                string directoryPath = directory.Substring(resourcesPath.Length + 1); // get the directory name only by skipping the resourcePath portion
+                T[] result = Resources.LoadAll(directoryPath, typeof(T)).Cast<T>().ToArray();   // Find all objects of that type. Cast it to that type. Turn it into an Array
 
                 foreach (T item in result)
                 {
@@ -27,6 +28,24 @@ namespace StevieDev.DialogueEditor
             }
 
             return tmp;
+        }
+
+        // allows you to find dialogue container in other folders than resource folder
+        public static List<DialogueContainerSO> FindAllDialogueContainerSO()
+        {
+            // Find all the DialogueContainerSO in Assets and get its GUID ID
+            string[] guids = AssetDatabase.FindAssets("t:DialogueContainerSO");
+
+            // Make an array as long as as the guids array
+            DialogueContainerSO[] items = new DialogueContainerSO[guids.Length];
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);                      // Use the guid ID to find the asset path
+                items[i] = AssetDatabase.LoadAssetAtPath<DialogueContainerSO>(path) ;       // Use the path to find and load DialogueContainerSO
+            }
+
+            return items.ToList();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace StevieDev.DialogueEditor
             List<List<string>> result = ParseCSV(text);
             List<string> headers = result[0];
 
-            List<DialogueContainerSO> dialogueContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+            List<DialogueContainerSO> dialogueContainers = Helper.FindAllDialogueContainerSO();
 
             foreach (DialogueContainerSO dialogueContainer in dialogueContainers)
             {

@@ -27,6 +27,7 @@ namespace StevieDev.DialogueEditor
         private TextField _textLanguages_Field;
         private ObjectField _audioClips_Field;
         private ObjectField _faceImage_Field;
+        private Image _faceImagePreview;
         private TextField _characterName_Field;
         private EnumField _faceImageType_field;
 
@@ -37,8 +38,8 @@ namespace StevieDev.DialogueEditor
 
         public DialogueNode(Vector2 Position, DialogueEditorWindow editorWindow, DialogueGraphView graphView)
         {
-            _editorWindow = editorWindow;
-            _graphView = graphView;
+            base._editorWindow = editorWindow;
+            base._graphView = graphView;
 
             title = "Dialogue";
             SetPosition(new Rect(Position, _defaultNodeSize));
@@ -67,11 +68,18 @@ namespace StevieDev.DialogueEditor
                 allowSceneObjects = false,
                 value = _faceImage
             };
+            _faceImagePreview = new Image();
+            _faceImagePreview.AddToClassList("FaceImagePreview");
+
+
             _faceImage_Field.RegisterValueChangedCallback(value =>
             {
-                _faceImage = (Sprite)value.newValue;
+                Sprite tmp = (Sprite)value.newValue;
+                _faceImage = tmp;
+                _faceImagePreview.image = (tmp != null ? tmp.texture : null);
             });
             _faceImage_Field.SetValueWithoutNotify(_faceImage);
+            mainContainer.Add(_faceImagePreview);
             mainContainer.Add(_faceImage_Field);
 
             // face image enum field
@@ -115,15 +123,6 @@ namespace StevieDev.DialogueEditor
             _characterName_Field.AddToClassList("TextName");
             mainContainer.Add(_characterName_Field);
 
-            //name_Field = new TextField("Name");
-            //name_Field.RegisterValueChangedCallback(value =>
-            //{
-            //    _name = value.newValue;
-            //});
-            //name_Field.SetValueWithoutNotify(_name);
-            //name_Field.AddToClassList("TextName");
-            //mainContainer.Add(name_Field);
-
             // Text Box
             Label lable_TextLanguages = new Label("Text Box");
             lable_TextLanguages.AddToClassList("label_TextLanguages");
@@ -142,10 +141,7 @@ namespace StevieDev.DialogueEditor
             _textLanguages_Field.AddToClassList("TextBox");
             mainContainer.Add(_textLanguages_Field);
 
-            Button button = new Button()
-            {
-                text = "Add Choice"
-            };
+            Button button = new Button() { text = "Add Choice" };
             button.clicked += () =>
             {
                 AddChoicePort(this);
@@ -153,6 +149,7 @@ namespace StevieDev.DialogueEditor
             titleButtonContainer.Add(button);
         }
 
+        override
         public void ReloadLanguage()
         {
             _textLanguages_Field.RegisterValueChangedCallback(value =>
@@ -182,14 +179,15 @@ namespace StevieDev.DialogueEditor
         public void LoadValueInToField()
         {
             _textLanguages_Field.SetValueWithoutNotify(_textLanguages.Find(language => language.LanguageType == _editorWindow.SelectedLanguage).LanguageGenericType);
-
             _audioClips_Field.SetValueWithoutNotify(_audioClips.Find(language => language.LanguageType == _editorWindow.SelectedLanguage).LanguageGenericType);
-
             _faceImage_Field.SetValueWithoutNotify(_faceImage);
-
             _faceImageType_field.SetValueWithoutNotify(_faceImageType);
-
             _characterName_Field.SetValueWithoutNotify(_characterName);
+
+            if(_faceImage != null) 
+            {
+                _faceImagePreview.image = ((Sprite)_faceImage_Field.value).texture;
+            }
         }
 
         public Port AddChoicePort(BaseNode baseNode, DialogueNodePort dialogueNodePort = null)
@@ -201,7 +199,6 @@ namespace StevieDev.DialogueEditor
 
             DialogueNodePort newDialogueNodePort = new DialogueNodePort();
             newDialogueNodePort.PortGUID = Guid.NewGuid().ToString();
-            newDialogueNodePort.MyPort = newPort;
             foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
             {
                 newDialogueNodePort.TextLanguages.Add(new LanguageGeneric<string>
@@ -239,8 +236,12 @@ namespace StevieDev.DialogueEditor
             };
             newPort.contentContainer.Add(deleteButton);
 
-            newDialogueNodePort.MyPort = newPort;
-            newPort.portName = String.Empty;
+            //newDialogueNodePort.MyPort = newPort;
+            newPort.portName = dialogueNodePort.PortGUID;                       // We use portName as PortID
+            Label portNameLable = newPort.contentContainer.Q<Label>("type");    // Get Label in port aht is used to contain the port name
+            portNameLable.AddToClassList("PortName");                           // Add a USS class to it so we can hide it in the editor window
+            //baseNode.Remove(portNameLable);                                   
+
 
             DialogueNodePorts.Add(newDialogueNodePort);
 
@@ -253,7 +254,7 @@ namespace StevieDev.DialogueEditor
 
         private void DeletePort(BaseNode node, Port port)
         {
-            DialogueNodePort tmp = DialogueNodePorts.Find(tmpPort => tmpPort.MyPort == port);
+            DialogueNodePort tmp = DialogueNodePorts.Find(tmpPort => tmpPort.PortGUID == port.portName);
             DialogueNodePorts.Remove(tmp);
 
             IEnumerable<Edge> portEdge = _graphView.edges.ToList().Where(edge => edge.output == port);

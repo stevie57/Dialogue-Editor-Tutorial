@@ -3,12 +3,47 @@
 	background-color: rgb(29,115,57)
 }
 
-#node-border{
+#node-border
+{
 	background-color: rgb(0,0,0)
 }
 
-.Label{
+.Label
+{
 	margin-top: 5px;
 	margin-left: 4px;
 	font-size: 15px;
+}
+
+.PortName
+{
+	display:none;
+}
+
+.FaceImagePreview
+{
+	height: 100px;
+	width: 100px;
+	margin: auto;
+}
+
+.EventBox
+{
+	flex-direction: row;	
+}
+
+.EventText{
+	min-width:150px;
+}
+
+.EventInt{
+	min-width:40px;
+}
+
+.EventObject{
+
+}
+
+.EventBtn{
+
 }

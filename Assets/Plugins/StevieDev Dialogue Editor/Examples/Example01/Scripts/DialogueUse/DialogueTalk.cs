@@ -67,11 +67,13 @@ namespace StevieDev.DialogueEditor
 
         private void RunNode(EventNodeData nodeData)
         {
-            if (nodeData.DialogueEventSO != null)
+            foreach (var item in  nodeData.EventScriptableObjectDatas)
             {
-                nodeData.DialogueEventSO.RunEvent();
+                if(item.DialogueEventSO != null)
+                {
+                    item.DialogueEventSO.RunEvent();
+                }
             }
-
             CheckNodeType(GetNextNode(nodeData));
         }
 

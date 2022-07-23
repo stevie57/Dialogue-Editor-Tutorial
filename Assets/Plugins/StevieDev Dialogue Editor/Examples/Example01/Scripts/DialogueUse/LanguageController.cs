@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanguageController : MonoBehaviour
+namespace StevieDev.DialogueEditor
 {
-    [SerializeField] private LanguageType _language;
-
-    private static LanguageController _instance;
-    public static LanguageController Instance { get => _instance;}
-    public LanguageType Language { get => _language; set => _language = value; }
-
-    private void Awake()
+    public class LanguageController : MonoBehaviour
     {
-        if (_instance == null)
+        [SerializeField] private LanguageType _language;
+
+        private static LanguageController _instance;
+        public static LanguageController Instance { get => _instance; }
+        public LanguageType Language { get => _language; set => _language = value; }
+
+        private void Awake()
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+                Destroy(gameObject);
         }
-        else
-            Destroy(gameObject);
     }
 }

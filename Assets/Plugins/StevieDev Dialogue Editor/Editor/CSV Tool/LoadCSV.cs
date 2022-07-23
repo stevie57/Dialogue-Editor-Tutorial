@@ -7,239 +7,242 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-public class LoadCSV 
+namespace StevieDev.DialogueEditor
 {
-    private string csvDirectoryName = "Resources/Dialogue Editor/CSV File";
-    private string csvFileName = "DialogueCSV_Load.csv";
-
-    public void Load()
+    public class LoadCSV
     {
-        string text = File.ReadAllText($"{Application.dataPath}/{csvDirectoryName}/{csvFileName}");
-        List<List<string>> result = ParseCSV(text);
-        List<string> headers = result[0];
-        
-        List<DialogueContainerSO> dialogueContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+        private string csvDirectoryName = "Resources/Dialogue Editor/CSV File";
+        private string csvFileName = "DialogueCSV_Load.csv";
 
-        foreach(DialogueContainerSO dialogueContainer in dialogueContainers)
+        public void Load()
         {
-            foreach(DialogueNodeData nodeData in dialogueContainer.DialogueNodeDatas)
+            string text = File.ReadAllText($"{Application.dataPath}/{csvDirectoryName}/{csvFileName}");
+            List<List<string>> result = ParseCSV(text);
+            List<string> headers = result[0];
+
+            List<DialogueContainerSO> dialogueContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+
+            foreach (DialogueContainerSO dialogueContainer in dialogueContainers)
             {
-                LoadInToNode(result, headers, nodeData);
-                foreach(DialogueNodePort nodePort in nodeData.DialogueNodePorts)
+                foreach (DialogueNodeData nodeData in dialogueContainer.DialogueNodeDatas)
                 {
-                    LoadInToNodePort(result,headers, nodePort);
+                    LoadInToNode(result, headers, nodeData);
+                    foreach (DialogueNodePort nodePort in nodeData.DialogueNodePorts)
+                    {
+                        LoadInToNodePort(result, headers, nodePort);
+                    }
                 }
+                EditorUtility.SetDirty(dialogueContainer);
+                AssetDatabase.SaveAssets();
             }
-            EditorUtility.SetDirty(dialogueContainer);
-            AssetDatabase.SaveAssets();
         }
-    }
 
-    private void LoadInToNode(List<List<string>> result, List<string> headers, DialogueNodeData nodeData)
-    {
-        foreach(List<string> line in result)
+        private void LoadInToNode(List<List<string>> result, List<string> headers, DialogueNodeData nodeData)
         {
-            if(line[0] == nodeData.SavedNodeGUID)
+            foreach (List<string> line in result)
             {
-                for (int i = 0; i < line.Count; i++)
+                if (line[0] == nodeData.SavedNodeGUID)
                 {
-                    foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+                    for (int i = 0; i < line.Count; i++)
                     {
-                        if(headers[i] == languageType.ToString())
+                        foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
                         {
-                            nodeData.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType = line[i];
+                            if (headers[i] == languageType.ToString())
+                            {
+                                nodeData.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType = line[i];
+                            }
                         }
                     }
-                }
 
-            }
-        }  
-    }
-
-    private void LoadInToNodePort(List<List<string>> result, List<string> headers, DialogueNodePort nodePort)
-    {
-        foreach (List<string> line in result)
-        {
-            if (line[0] == nodePort.PortGUID)
-            {
-                for (int i = 0; i < line.Count; i++)
-                {
-                    foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
-                    {
-                        if (headers[i] == languageType.ToString())
-                        {
-                            nodePort.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType = line[i];
-                        }
-                    }
                 }
             }
         }
-    }
 
-    // Made by furukazu : https://github.com/furukazu/UnityCSVReader/edit/master/CSVReader.cs
-    // flag for processing a CSV
-    private enum ParsingMode
-    {
-        // default(treat as null)
-        None,
-        // processing a character which is out of quotes 
-        OutQuote,
-        // processing a character which is in quotes
-        InQuote
-    }
+        private void LoadInToNodePort(List<List<string>> result, List<string> headers, DialogueNodePort nodePort)
+        {
+            foreach (List<string> line in result)
+            {
+                if (line[0] == nodePort.PortGUID)
+                {
+                    for (int i = 0; i < line.Count; i++)
+                    {
+                        foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+                        {
+                            if (headers[i] == languageType.ToString())
+                            {
+                                nodePort.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType = line[i];
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-    /// <summary>
-    /// Parses the CSV string.
-    /// </summary>
-    /// <returns>a two-dimensional array. first index indicates the row.  second index indicates the column.</returns>
-    /// <param name="src">raw CSV contents as string</param>
-    public List<List<string>> ParseCSV(string src)
-    {
-        var rows = new List<List<string>>();
-        var cols = new List<string>();
+        // Made by furukazu : https://github.com/furukazu/UnityCSVReader/edit/master/CSVReader.cs
+        // flag for processing a CSV
+        private enum ParsingMode
+        {
+            // default(treat as null)
+            None,
+            // processing a character which is out of quotes 
+            OutQuote,
+            // processing a character which is in quotes
+            InQuote
+        }
+
+        /// <summary>
+        /// Parses the CSV string.
+        /// </summary>
+        /// <returns>a two-dimensional array. first index indicates the row.  second index indicates the column.</returns>
+        /// <param name="src">raw CSV contents as string</param>
+        public List<List<string>> ParseCSV(string src)
+        {
+            var rows = new List<List<string>>();
+            var cols = new List<string>();
 #pragma warning disable XS0001 // Find APIs marked as TODO in Mono
-        var buffer = new StringBuilder();
+            var buffer = new StringBuilder();
 #pragma warning restore XS0001 // Find APIs marked as TODO in Mono
 
-        ParsingMode mode = ParsingMode.OutQuote;
-        bool requireTrimLineHead = false;
-        var isBlank = new Regex(@"\s");
+            ParsingMode mode = ParsingMode.OutQuote;
+            bool requireTrimLineHead = false;
+            var isBlank = new Regex(@"\s");
 
-        int len = src.Length;
+            int len = src.Length;
 
-        for (int i = 0; i < len; ++i)
-        {
-
-            char c = src[i];
-
-            // remove whilespace at beginning of line
-            if (requireTrimLineHead)
+            for (int i = 0; i < len; ++i)
             {
-                if (isBlank.IsMatch(c.ToString()))
+
+                char c = src[i];
+
+                // remove whilespace at beginning of line
+                if (requireTrimLineHead)
                 {
-                    continue;
+                    if (isBlank.IsMatch(c.ToString()))
+                    {
+                        continue;
+                    }
+                    requireTrimLineHead = false;
                 }
-                requireTrimLineHead = false;
-            }
 
-            // finalize when c is the last character
-            if ((i + 1) == len)
-            {
-                // final char
+                // finalize when c is the last character
+                if ((i + 1) == len)
+                {
+                    // final char
+                    switch (mode)
+                    {
+                        case ParsingMode.InQuote:
+                            if (c == '"')
+                            {
+                                // ignore
+                            }
+                            else
+                            {
+                                // if close quote is missing
+                                buffer.Append(c);
+                            }
+                            cols.Add(buffer.ToString());
+                            rows.Add(cols);
+                            return rows;
+
+                        case ParsingMode.OutQuote:
+                            if (c == ',')
+                            {
+                                // if the final character is comma, add an empty cell
+                                // next col
+                                cols.Add(buffer.ToString());
+                                cols.Add(string.Empty);
+                                rows.Add(cols);
+                                return rows;
+                            }
+                            if (cols.Count == 0)
+                            {
+                                // if the final line is empty, ignore it. 
+                                if (string.Empty.Equals(c.ToString().Trim()))
+                                {
+                                    return rows;
+                                }
+                            }
+                            buffer.Append(c);
+                            cols.Add(buffer.ToString());
+                            rows.Add(cols);
+                            return rows;
+                    }
+                }
+
+                // the next character
+                char n = src[i + 1];
+
                 switch (mode)
                 {
-                    case ParsingMode.InQuote:
+                    case ParsingMode.OutQuote:
+                        // out quote
                         if (c == '"')
                         {
-                            // ignore
+                            // to in-quote
+                            mode = ParsingMode.InQuote;
+                            continue;
+
+                        }
+                        else if (c == ',')
+                        {
+                            // next cell
+                            cols.Add(buffer.ToString());
+                            buffer.Remove(0, buffer.Length);
+
+                        }
+                        else if (c == '\r' && n == '\n')
+                        {
+                            // new line(CR+LF)
+                            cols.Add(buffer.ToString());
+                            rows.Add(cols);
+                            cols = new List<string>();
+                            buffer.Remove(0, buffer.Length);
+                            ++i; // skip next code
+                            requireTrimLineHead = true;
+
+                        }
+                        else if (c == '\n' || c == '\r')
+                        {
+                            // new line
+                            cols.Add(buffer.ToString());
+                            rows.Add(cols);
+                            cols = new List<string>();
+                            buffer.Remove(0, buffer.Length);
+                            requireTrimLineHead = true;
+
                         }
                         else
                         {
-                            // if close quote is missing
+                            // get one char
                             buffer.Append(c);
                         }
-                        cols.Add(buffer.ToString());
-                        rows.Add(cols);
-                        return rows;
+                        break;
 
-                    case ParsingMode.OutQuote:
-                        if (c == ',')
+                    case ParsingMode.InQuote:
+                        // in quote
+                        if (c == '"' && n != '"')
                         {
-                            // if the final character is comma, add an empty cell
-                            // next col
-                            cols.Add(buffer.ToString());
-                            cols.Add(string.Empty);
-                            rows.Add(cols);
-                            return rows;
+                            // to out-quote
+                            mode = ParsingMode.OutQuote;
+
                         }
-                        if (cols.Count == 0)
+                        else if (c == '"' && n == '"')
                         {
-                            // if the final line is empty, ignore it. 
-                            if (string.Empty.Equals(c.ToString().Trim()))
-                            {
-                                return rows;
-                            }
+                            // get "
+                            buffer.Append('"');
+                            ++i;
+
                         }
-                        buffer.Append(c);
-                        cols.Add(buffer.ToString());
-                        rows.Add(cols);
-                        return rows;
+                        else
+                        {
+                            // get one char
+                            buffer.Append(c);
+                        }
+                        break;
                 }
             }
-
-            // the next character
-            char n = src[i + 1];
-
-            switch (mode)
-            {
-                case ParsingMode.OutQuote:
-                    // out quote
-                    if (c == '"')
-                    {
-                        // to in-quote
-                        mode = ParsingMode.InQuote;
-                        continue;
-
-                    }
-                    else if (c == ',')
-                    {
-                        // next cell
-                        cols.Add(buffer.ToString());
-                        buffer.Remove(0, buffer.Length);
-
-                    }
-                    else if (c == '\r' && n == '\n')
-                    {
-                        // new line(CR+LF)
-                        cols.Add(buffer.ToString());
-                        rows.Add(cols);
-                        cols = new List<string>();
-                        buffer.Remove(0, buffer.Length);
-                        ++i; // skip next code
-                        requireTrimLineHead = true;
-
-                    }
-                    else if (c == '\n' || c == '\r')
-                    {
-                        // new line
-                        cols.Add(buffer.ToString());
-                        rows.Add(cols);
-                        cols = new List<string>();
-                        buffer.Remove(0, buffer.Length);
-                        requireTrimLineHead = true;
-
-                    }
-                    else
-                    {
-                        // get one char
-                        buffer.Append(c);
-                    }
-                    break;
-
-                case ParsingMode.InQuote:
-                    // in quote
-                    if (c == '"' && n != '"')
-                    {
-                        // to out-quote
-                        mode = ParsingMode.OutQuote;
-
-                    }
-                    else if (c == '"' && n == '"')
-                    {
-                        // get "
-                        buffer.Append('"');
-                        ++i;
-
-                    }
-                    else
-                    {
-                        // get one char
-                        buffer.Append(c);
-                    }
-                    break;
-            }
+            return rows;
         }
-        return rows;
-    }
 
+    }
 }

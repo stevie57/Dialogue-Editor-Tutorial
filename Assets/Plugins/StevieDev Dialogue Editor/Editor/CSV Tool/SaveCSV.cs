@@ -4,125 +4,128 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class SaveCSV
+namespace StevieDev.DialogueEditor
 {
-    public string csvDirectoryName = "Resources/Dialogue Editor/CSV File";
-    private string csvFileName = "DialogueCSV_Save.csv";
-    private string csvSeparator = ",";
-    private List<string> csvHeader;
-    private string idName = "GUID ID";
-    private string dialogueName = "Dialogue Name";
-
-    public void Save()
+    public class SaveCSV
     {
-        List<DialogueContainerSO> dialogeContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
-        
-        CreateFile();
+        public string csvDirectoryName = "Resources/Dialogue Editor/CSV File";
+        private string csvFileName = "DialogueCSV_Save.csv";
+        private string csvSeparator = ",";
+        private List<string> csvHeader;
+        private string idName = "GUID ID";
+        private string dialogueName = "Dialogue Name";
 
-        foreach (DialogueContainerSO dialogeContainer in dialogeContainers)
+        public void Save()
         {
-            foreach (DialogueNodeData nodeData in dialogeContainer.DialogueNodeDatas)
+            List<DialogueContainerSO> dialogeContainers = Helper.FindAllObjectFromResources<DialogueContainerSO>();
+
+            CreateFile();
+
+            foreach (DialogueContainerSO dialogeContainer in dialogeContainers)
             {
-                List<string> texts = new List<string>();
-                
-                texts.Add(nodeData.SavedNodeGUID);
-                //texts.Add(nodeData.Name);
-
-                foreach (LanguageType languageType in ((LanguageType[])Enum.GetValues(typeof(LanguageType))))
+                foreach (DialogueNodeData nodeData in dialogeContainer.DialogueNodeDatas)
                 {
-                    string tmp = nodeData.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType.Replace("\"", "\"\"");
-                    texts.Add($"\"{tmp}\"");
-                }
+                    List<string> TextLanguages = new List<string>();
 
-                AppendToFile(texts);
+                    TextLanguages.Add(nodeData.SavedNodeGUID);
+                    //TextLanguages.Add(nodeData.Name);
 
-                foreach (DialogueNodePort nodePorts in nodeData.DialogueNodePorts)
-                {
-                    texts = new List<string>();
-
-                    texts.Add(nodePorts.PortGUID);
-                    //texts.Add(dialogueContainer.);
-
-                    foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+                    foreach (LanguageType languageType in ((LanguageType[])Enum.GetValues(typeof(LanguageType))))
                     {
-                        string tmp = nodePorts.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType.Replace("\"", "\"\"");
-                        texts.Add($"\"{tmp}\"");
+                        string tmp = nodeData.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType.Replace("\"", "\"\"");
+                        TextLanguages.Add($"\"{tmp}\"");
                     }
 
-                    AppendToFile(texts);
+                    AppendToFile(TextLanguages);
+
+                    foreach (DialogueNodePort nodePorts in nodeData.DialogueNodePorts)
+                    {
+                        TextLanguages = new List<string>();
+
+                        TextLanguages.Add(nodePorts.PortGUID);
+                        //TextLanguages.Add(dialogueContainer.);
+
+                        foreach (LanguageType languageType in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+                        {
+                            string tmp = nodePorts.TextLanguages.Find(language => language.LanguageType == languageType).LanguageGenericType.Replace("\"", "\"\"");
+                            TextLanguages.Add($"\"{tmp}\"");
+                        }
+
+                        AppendToFile(TextLanguages);
+                    }
                 }
             }
         }
-    }
 
-    private void AppendToFile(List<string> strings)
-    {
-        using (StreamWriter sw = File.AppendText(GetFilePath()))
+        private void AppendToFile(List<string> strings)
         {
-            string finalString = "";
-            foreach (string text in strings)
+            using (StreamWriter sw = File.AppendText(GetFilePath()))
             {
-                if (finalString != "")
+                string finalString = "";
+                foreach (string text in strings)
                 {
-                    finalString += csvSeparator;
+                    if (finalString != "")
+                    {
+                        finalString += csvSeparator;
+                    }
+                    finalString += text;
                 }
-                finalString += text;
+
+                sw.WriteLine(finalString);
             }
-
-            sw.WriteLine(finalString);
         }
-    }
 
-    private void CreateFile()
-    {
-        VerifyDirectory();
-        MakeHeader();
-        using (StreamWriter sw = File.CreateText(GetFilePath()))
+        private void CreateFile()
         {
-            string finalString = "";
-            foreach (string header in csvHeader)
+            VerifyDirectory();
+            MakeHeader();
+            using (StreamWriter sw = File.CreateText(GetFilePath()))
             {
-                if (finalString != "")
+                string finalString = "";
+                foreach (string header in csvHeader)
                 {
-                    finalString += csvSeparator;
+                    if (finalString != "")
+                    {
+                        finalString += csvSeparator;
+                    }
+                    finalString += header;
                 }
-                finalString += header;
+
+                sw.WriteLine(finalString);
+            }
+        }
+
+        private void MakeHeader()
+        {
+            List<string> headerText = new List<string>();
+            headerText.Add(idName);
+            //headerText.Add(dialogueName);
+
+            foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+            {
+                headerText.Add(language.ToString());
             }
 
-            sw.WriteLine(finalString);
+            csvHeader = headerText;
         }
-    }
 
-    private void MakeHeader()
-    {
-        List<string> headerText = new List<string>();
-        headerText.Add(idName);
-        //headerText.Add(dialogueName);
-
-        foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
+        private void VerifyDirectory()
         {
-            headerText.Add(language.ToString());
+            string directory = GetDirectoryPath();
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
         }
 
-        csvHeader = headerText;
-    }
-
-    private void VerifyDirectory()
-    {
-        string directory = GetDirectoryPath();
-        if (!Directory.Exists(directory))
+        private string GetDirectoryPath()
         {
-            Directory.CreateDirectory(directory);
+            return $"{Application.dataPath}/{csvDirectoryName}";
         }
-    }
 
-    private string GetDirectoryPath()
-    {
-        return $"{Application.dataPath}/{csvDirectoryName}";
-    }
-
-    private string GetFilePath()
-    {
-        return $"{GetDirectoryPath()}/{csvFileName}";
+        private string GetFilePath()
+        {
+            return $"{GetDirectoryPath()}/{csvFileName}";
+        }
     }
 }

@@ -2,38 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomColors : MonoBehaviour
+namespace StevieDev.DialogueEditor
 {
-    private List<Material> _materials = new List<Material>();
-
-    private void Awake()
+    public class RandomColors : MonoBehaviour
     {
-        SkinnedMeshRenderer[] skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        private List<Material> _materials = new List<Material>();
 
-        foreach(SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+        private void Awake()
         {
-            foreach (Material mat in skinnedMeshRenderer.materials) 
+            SkinnedMeshRenderer[] skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
             {
-                _materials.Add(mat);
+                foreach (Material mat in skinnedMeshRenderer.materials)
+                {
+                    _materials.Add(mat);
+                }
             }
         }
-    }
 
-    private void Start()
-    {
-        GameEvents.Instance.RandomColorModel += DoRandomColorModel;
-    }
-
-    private void OnDestroy()
-    {
-        GameEvents.Instance.RandomColorModel -= DoRandomColorModel;
-    }
-
-    private void DoRandomColorModel()
-    {
-        foreach(Material mat in _materials)
+        private void Start()
         {
-            mat.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+            GameEvents.Instance.RandomColorModel += DoRandomColorModel;
+        }
+
+        private void OnDestroy()
+        {
+            GameEvents.Instance.RandomColorModel -= DoRandomColorModel;
+        }
+
+        private void DoRandomColorModel()
+        {
+            foreach (Material mat in _materials)
+            {
+                mat.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+            }
         }
     }
 }

@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum LanguageType 
+namespace StevieDev.DialogueEditor
 {
-    English,
-    French
+    public enum LanguageType
+    {
+        English,
+        French
+    }
 }

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EndNodeType 
+namespace StevieDev.DialogueEditor
 {
-    End,
-    Repeat,
-    GoBack,
-    ReturnToStart
+    public enum EndNodeType
+    {
+        End,
+        Repeat,
+        GoBack,
+        ReturnToStart
+    }
 }

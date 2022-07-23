@@ -1,5 +1,8 @@
-﻿public enum DialogueFaceImageType
+﻿namespace StevieDev.DialogueEditor
 {
-    Left,
-    Right
+    public enum DialogueFaceImageType
+    {
+        Left,
+        Right
+    }
 }

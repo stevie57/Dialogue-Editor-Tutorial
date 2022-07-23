@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueGetData : MonoBehaviour
+namespace StevieDev.DialogueEditor
 {
-    [SerializeField] protected DialogueContainerSO _dialogueContainerSO;
-
-    protected BaseNodeData GetNodeByGUID(string targetNodeGUID)
+    public class DialogueGetData : MonoBehaviour
     {
-       return _dialogueContainerSO.AllNodes.Find(node=> node.SavedNodeGUID == targetNodeGUID);
-    }
+        [SerializeField] protected DialogueContainerSO _dialogueContainerSO;
 
-    protected BaseNodeData GetNodeByNodePort(DialogueNodePort nodePort)
-    {
-        return _dialogueContainerSO.AllNodes.Find(node => node.SavedNodeGUID == nodePort.InputGUID);
-    }
+        protected BaseNodeData GetNodeByGUID(string targetNodeGUID)
+        {
+            return _dialogueContainerSO.AllNodes.Find(node => node.SavedNodeGUID == targetNodeGUID);
+        }
 
-    protected BaseNodeData GetNextNode(BaseNodeData baseNodeData)
-    {
-        NodeLinkData nodeLinkData = _dialogueContainerSO.NodeLinkDatas.Find(edge => edge.BaseNodeGUID == baseNodeData.SavedNodeGUID);
+        protected BaseNodeData GetNodeByNodePort(DialogueNodePort nodePort)
+        {
+            return _dialogueContainerSO.AllNodes.Find(node => node.SavedNodeGUID == nodePort.InputGUID);
+        }
 
-        return GetNodeByGUID(nodeLinkData.TargetNodeGUID);
+        protected BaseNodeData GetNextNode(BaseNodeData baseNodeData)
+        {
+            NodeLinkData nodeLinkData = _dialogueContainerSO.NodeLinkDatas.Find(edge => edge.BaseNodeGUID == baseNodeData.SavedNodeGUID);
+
+            return GetNodeByGUID(nodeLinkData.TargetNodeGUID);
+        }
     }
 }

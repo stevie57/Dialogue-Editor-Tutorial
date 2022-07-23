@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Dialogue/Random Color Event")]
-[System.Serializable]
-public class Event_RandomColors : DialogueEventSO
+namespace StevieDev.DialogueEditor
 {
-    public override void RunEvent()
+    [CreateAssetMenu(menuName = "Dialogue/Random Color Event")]
+    [System.Serializable]
+    public class Event_RandomColors : DialogueEventSO
     {
-        GameEvents.Instance.CallRandomColorModel();
-        base.RunEvent();
+        public override void RunEvent()
+        {
+            GameEvents.Instance.CallRandomColorModel();
+            base.RunEvent();
+        }
     }
 }

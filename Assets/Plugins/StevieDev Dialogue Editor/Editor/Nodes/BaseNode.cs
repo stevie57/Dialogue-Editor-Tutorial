@@ -4,41 +4,44 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BaseNode : Node
+namespace StevieDev.DialogueEditor
 {
-    private string nodeGUID;
-    protected DialogueGraphView _graphView;
-    protected DialogueEditorWindow _editorWindow;
-    protected Vector2 _defaultNodeSize = new Vector2(200, 250);
-    public string NodeGUID { get => nodeGUID; set => nodeGUID = value; }
-
-    public BaseNode()
+    public class BaseNode : Node
     {
-        StyleSheet styleSheet = Resources.Load<StyleSheet>("NodeStyleSheet");
-        styleSheets.Add(styleSheet);
-    }
+        private string nodeGUID;
+        protected DialogueGraphView _graphView;
+        protected DialogueEditorWindow _editorWindow;
+        protected Vector2 _defaultNodeSize = new Vector2(200, 250);
+        public string NodeGUID { get => nodeGUID; set => nodeGUID = value; }
 
-    public void AddOutputPort(string portName, Port.Capacity capacity = Port.Capacity.Single)
-    {
-        Port outputPort = GetPortInstance(Direction.Output, capacity);
-        outputPort.portName = portName;
-        outputContainer.Add(outputPort);
-    }
+        public BaseNode()
+        {
+            StyleSheet styleSheet = Resources.Load<StyleSheet>("NodeStyleSheet");
+            styleSheets.Add(styleSheet);
+        }
 
-    public void AddInputPort(string portName, Port.Capacity capacity = Port.Capacity.Multi)
-    {
-        Port inputPort = GetPortInstance(Direction.Input, capacity);
-        inputPort.portName = portName;
-        inputContainer.Add(inputPort);
-    }
+        public void AddOutputPort(string portName, Port.Capacity capacity = Port.Capacity.Single)
+        {
+            Port outputPort = GetPortInstance(Direction.Output, capacity);
+            outputPort.portName = portName;
+            outputContainer.Add(outputPort);
+        }
 
-    public Port GetPortInstance(Direction nodeDirection, Port.Capacity capacity = Port.Capacity.Single)
-    {
-        return InstantiatePort(Orientation.Horizontal, nodeDirection, capacity, typeof(float));
-    }
+        public void AddInputPort(string portName, Port.Capacity capacity = Port.Capacity.Multi)
+        {
+            Port inputPort = GetPortInstance(Direction.Input, capacity);
+            inputPort.portName = portName;
+            inputContainer.Add(inputPort);
+        }
 
-    public virtual void LoadValueInToField()
-    {
+        public Port GetPortInstance(Direction nodeDirection, Port.Capacity capacity = Port.Capacity.Single)
+        {
+            return InstantiatePort(Orientation.Horizontal, nodeDirection, capacity, typeof(float));
+        }
 
+        public virtual void LoadValueInToField()
+        {
+
+        }
     }
 }

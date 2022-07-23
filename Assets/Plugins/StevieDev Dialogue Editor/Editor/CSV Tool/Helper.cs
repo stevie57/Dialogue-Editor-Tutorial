@@ -4,26 +4,30 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public static class Helper 
+namespace StevieDev.DialogueEditor
 {
-    public static List<T> FindAllObjectFromResources<T>()
+    public static class Helper
     {
-        List<T> tmp = new List<T>();
-        string resourcesPath = Application.dataPath + "/Resources";
-        string[] directories = Directory.GetDirectories(resourcesPath, "*", SearchOption.AllDirectories);
-
-        foreach(string directory in directories)
+        public static List<T> FindAllObjectFromResources<T>()
         {
-            string directoryPath = directory.Substring(resourcesPath.Length + 1);
-            T[] result = Resources.LoadAll(directoryPath, typeof(T)).Cast<T>().ToArray();
-            
-            foreach(T item in result)
-            {
-                if(!tmp.Contains(item))
-                    tmp.Add(item);
-            }
-        }
+            List<T> tmp = new List<T>();
+            string resourcesPath = Application.dataPath + "/Resources";
+            string[] directories = Directory.GetDirectories(resourcesPath, "*", SearchOption.AllDirectories);
 
-        return tmp;
+            foreach (string directory in directories)
+            {
+                string directoryPath = directory.Substring(resourcesPath.Length + 1);
+                T[] result = Resources.LoadAll(directoryPath, typeof(T)).Cast<T>().ToArray();
+
+                foreach (T item in result)
+                {
+                    if (!tmp.Contains(item))
+                        tmp.Add(item);
+                }
+            }
+
+            return tmp;
+        }
     }
 }
+

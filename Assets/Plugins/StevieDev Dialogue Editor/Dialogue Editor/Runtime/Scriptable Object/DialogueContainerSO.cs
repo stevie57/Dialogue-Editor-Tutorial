@@ -34,6 +34,8 @@ namespace StevieDev.DialogueEditor
     public class NodeLinkData
     {
         public string BaseNodeGUID;
+        public string BasePortName;
+        public string TargetPortName;
         public string TargetNodeGUID;
     }
 

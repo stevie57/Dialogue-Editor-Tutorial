@@ -49,7 +49,9 @@ namespace StevieDev.DialogueEditor
                 dialogueContainerSO.NodeLinkDatas.Add(new NodeLinkData()
                 {
                     BaseNodeGUID = outputNode.NodeGUID,
+                    BasePortName = connectedEdges[i].output.portName,
                     TargetNodeGUID = inputNode.NodeGUID,
+                    TargetPortName = connectedEdges[i].input.portName
                 });
             }
         }
@@ -232,48 +234,57 @@ namespace StevieDev.DialogueEditor
             {
                 List<NodeLinkData> connections = dialogueContainerSO.NodeLinkDatas.Where(Edge => Edge.BaseNodeGUID == _nodes[i].NodeGUID).ToList();
 
+                // Check current node and look in its output container.
+                // Look through all children visual elements to find Ports and cast back as a list.
+                List<Port> allOutputPorts = _nodes[i].outputContainer.Children().Where(x => x is Port).Cast<Port>().ToList();
+
                 for (int j = 0; j < connections.Count; j++)
                 {
                     string targetNodeGuid = connections[j].TargetNodeGUID;
                     BaseNode targetNode = _nodes.First(node => node.NodeGUID == targetNodeGuid);
 
-                    if ((_nodes[i] is DialogueNode) == false)
+                    if (targetNode == null) continue;
+
+                    foreach(Port item in allOutputPorts)
                     {
-                        LinkNodesTogether(_nodes[i].outputContainer[j].Q<Port>(), (Port)targetNode.inputContainer[0]);
+                        if(item.portName == connections[j].BasePortName)
+                        {
+                            LinkNodesTogether(item, (Port)targetNode.inputContainer[0]);
+                        }
                     }
                 }
             }
 
             // make connection for dialogue nodes
-            List<DialogueNode> dialogueNodes = _nodes.FindAll(node => node is DialogueNode).Cast<DialogueNode>().ToList();
+            //List<DialogueNode> dialogueNodes = _nodes.FindAll(node => node is DialogueNode).Cast<DialogueNode>().ToList();
 
-            foreach (DialogueNode dialogueNode in dialogueNodes)
-            {
-                foreach (DialogueNodePort nodePort in dialogueNode.DialogueNodePorts)
-                {
-                    // Check if the port has a connection
-                    if (nodePort.InputGUID != string.Empty)
-                    {
-                        // Find target node with ID
-                        BaseNode targetNode = _nodes.Find(node => node.NodeGUID == nodePort.InputGUID);
+            //foreach (DialogueNode dialogueNode in dialogueNodes)
+            //{
+            //    foreach (DialogueNodePort nodePort in dialogueNode.DialogueNodePorts)
+            //    {
+            //        // Check if the port has a connection
+            //        if (nodePort.InputGUID != string.Empty)
+            //        {
+            //            // Find target node with ID
+            //            BaseNode targetNode = _nodes.Find(node => node.NodeGUID == nodePort.InputGUID);
 
-                        Port myPort = null;
+            //            Port myPort = null;
 
-                        // Check all child of output containers which will contains port
-                        for (int i = 0; i < dialogueNode.outputContainer.childCount; i++)
-                        {
-                            // Find port with same ID, we use portName as ID.
-                            if(dialogueNode.outputContainer[i].Q<Port>().portName == nodePort.PortGUID)
-                            {
-                                myPort = dialogueNode.outputContainer[i].Q<Port>();
-                            }
-                        }
+            //            // Check all child of output containers which will contains port
+            //            for (int i = 0; i < dialogueNode.outputContainer.childCount; i++)
+            //            {
+            //                // Find port with same ID, we use portName as ID.
+            //                if (dialogueNode.outputContainer[i].Q<Port>().portName == nodePort.PortGUID)
+            //                {
+            //                    myPort = dialogueNode.outputContainer[i].Q<Port>();
+            //                }
+            //            }
 
-                        // Make the edge connection between the two ports
-                        LinkNodesTogether(myPort, (Port)targetNode.inputContainer[0]);
-                    }
-                }
-            }
+            //            // Make the edge connection between the two ports
+            //            LinkNodesTogether(myPort, (Port)targetNode.inputContainer[0]);
+            //        }
+            //    }
+            //}
         }
 
         private void LinkNodesTogether(Port outputPort, Port inputPort)

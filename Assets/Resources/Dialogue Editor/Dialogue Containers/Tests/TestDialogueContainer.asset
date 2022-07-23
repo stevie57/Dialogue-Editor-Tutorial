@@ -14,15 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeLinkDatas:
   - BaseNodeGUID: 07a7ea98-e0b0-475d-bff0-75a4275f69ae
+    BasePortName: Output
+    TargetPortName: Input
     TargetNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
-  - BaseNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
-    TargetNodeGUID: ce87b45c-9759-45ea-a979-756c30e560b4
   - BaseNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+    BasePortName: cb9a9f51-9234-48ec-a9eb-b4e8dd08b7a1
+    TargetPortName: Input
     TargetNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
   - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+    BasePortName: 3e95f4c1-4594-4ae3-a0f7-606a17990878
+    TargetPortName: Input
     TargetNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
   - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+    BasePortName: dc6ec934-357c-4805-802a-dc3c7f9b2605
+    TargetPortName: Input
     TargetNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
+  - BaseNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
+    BasePortName: Output
+    TargetPortName: Input
+    TargetNodeGUID: ce87b45c-9759-45ea-a979-756c30e560b4
   StartNodeDatas:
   - SavedNodeGUID: 07a7ea98-e0b0-475d-bff0-75a4275f69ae
     Position: {x: 113, y: 209}
@@ -85,8 +95,9 @@ MonoBehaviour:
       LanguageGenericType: node1text
   EventNodeDatas:
   - SavedNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
-    Position: {x: 616, y: 209}
-    DialogueEventSO: {fileID: 11400000, guid: 0a55979c52a92dc48ae2d8f02d9466e1, type: 2}
+    Position: {x: 690, y: 391}
+    EventScriptableObjectDatas: []
+    EventStringIdDatas: []
   EndNodeDatas:
   - SavedNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
     Position: {x: 934, y: 28}

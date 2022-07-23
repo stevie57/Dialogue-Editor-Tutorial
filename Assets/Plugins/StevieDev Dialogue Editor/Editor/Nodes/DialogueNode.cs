@@ -199,6 +199,7 @@ namespace StevieDev.DialogueEditor
 
             DialogueNodePort newDialogueNodePort = new DialogueNodePort();
             newDialogueNodePort.PortGUID = Guid.NewGuid().ToString();
+
             foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
             {
                 newDialogueNodePort.TextLanguages.Add(new LanguageGeneric<string>
@@ -236,8 +237,7 @@ namespace StevieDev.DialogueEditor
             };
             newPort.contentContainer.Add(deleteButton);
 
-            //newDialogueNodePort.MyPort = newPort;
-            newPort.portName = dialogueNodePort.PortGUID;                       // We use portName as PortID
+            newPort.portName = newDialogueNodePort.PortGUID;                       // We use portName as PortID
             Label portNameLable = newPort.contentContainer.Q<Label>("type");    // Get Label in port aht is used to contain the port name
             portNameLable.AddToClassList("PortName");                           // Add a USS class to it so we can hide it in the editor window
             //baseNode.Remove(portNameLable);                                   

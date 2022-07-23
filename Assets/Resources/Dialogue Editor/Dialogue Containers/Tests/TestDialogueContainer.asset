@@ -17,59 +17,27 @@ MonoBehaviour:
     TargetNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
   - BaseNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
     TargetNodeGUID: ce87b45c-9759-45ea-a979-756c30e560b4
+  - BaseNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+    TargetNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
   - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
     TargetNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
   - BaseNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
     TargetNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
-  - BaseNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
-    TargetNodeGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
   StartNodeDatas:
   - SavedNodeGUID: 07a7ea98-e0b0-475d-bff0-75a4275f69ae
-    Position: {x: 117, y: 237}
+    Position: {x: 113, y: 209}
   DialogueNodeDatas:
-  - SavedNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
-    Position: {x: 340, y: 125}
-    DialogueNodePorts:
-    - PortGUID: 
-      InputGUID: 827ba680-3d43-47fd-97b7-843be297d21f
-      OutputGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
-      TextLanguages:
-      - LanguageType: 0
-        LanguageGenericType: Choice 1
-      - LanguageType: 1
-        LanguageGenericType: Choice 1
-    - PortGUID: 
-      InputGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
-      OutputGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
-      TextLanguages:
-      - LanguageType: 0
-        LanguageGenericType: Color Change
-      - LanguageType: 1
-        LanguageGenericType: Choice 2
-    Sprite: {fileID: 0}
-    DialogueFaceImageType: 0
-    AudioClips:
-    - LanguageType: 0
-      LanguageGenericType: {fileID: 0}
-    - LanguageType: 1
-      LanguageGenericType: {fileID: 0}
-    Name: a
-    TextType:
-    - LanguageType: 0
-      LanguageGenericType: 1
-    - LanguageType: 1
-      LanguageGenericType: 2
   - SavedNodeGUID: 827ba680-3d43-47fd-97b7-843be297d21f
     Position: {x: 648, y: -70}
     DialogueNodePorts:
-    - PortGUID: 
+    - PortGUID: cb9a9f51-9234-48ec-a9eb-b4e8dd08b7a1
       InputGUID: b94a1595-ebd9-46c8-ab67-35c65e2a7790
       OutputGUID: 827ba680-3d43-47fd-97b7-843be297d21f
       TextLanguages:
       - LanguageType: 0
-        LanguageGenericType: Choice 1
+        LanguageGenericType: node2 choice1
       - LanguageType: 1
-        LanguageGenericType: Choice 1
+        LanguageGenericType: Continue
     Sprite: {fileID: 0}
     DialogueFaceImageType: 0
     AudioClips:
@@ -77,12 +45,44 @@ MonoBehaviour:
       LanguageGenericType: {fileID: 0}
     - LanguageType: 1
       LanguageGenericType: {fileID: 0}
-    Name: 
-    TextType:
+    Name: Node2
+    TextLanguages:
     - LanguageType: 0
-      LanguageGenericType: you chose choice 1
+      LanguageGenericType: node2englishtext
     - LanguageType: 1
-      LanguageGenericType: 
+      LanguageGenericType: node2text
+  - SavedNodeGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+    Position: {x: 275, y: 105}
+    DialogueNodePorts:
+    - PortGUID: 3e95f4c1-4594-4ae3-a0f7-606a17990878
+      InputGUID: 827ba680-3d43-47fd-97b7-843be297d21f
+      OutputGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: node1 choice1load
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    - PortGUID: dc6ec934-357c-4805-802a-dc3c7f9b2605
+      InputGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
+      OutputGUID: 06ae36f5-cb7d-4042-8649-4494c3c38a67
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: node1 choice2
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 0
+    AudioClips:
+    - LanguageType: 0
+      LanguageGenericType: {fileID: 0}
+    - LanguageType: 1
+      LanguageGenericType: {fileID: 0}
+    Name: Node1
+    TextLanguages:
+    - LanguageType: 0
+      LanguageGenericType: node1englishtext
+    - LanguageType: 1
+      LanguageGenericType: node1text
   EventNodeDatas:
   - SavedNodeGUID: 92ca0795-03e1-4da4-ace6-cba826966fb0
     Position: {x: 616, y: 209}

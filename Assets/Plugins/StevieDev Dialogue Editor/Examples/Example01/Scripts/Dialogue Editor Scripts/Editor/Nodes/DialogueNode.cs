@@ -5,19 +5,18 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class DialogueNode : BaseNode
 {
     private List<LanguageGeneric<string>> _texts = new List<LanguageGeneric<string>>();
     private List<LanguageGeneric<AudioClip>> _audioClips = new List<LanguageGeneric<AudioClip>>();
     private Sprite _faceImage;
-    private string _name = string.Empty;
+    private string _nameText = string.Empty;
     private DialogueFaceImageType _faceImageType;
     private List<DialogueNodePort> _dialogueNodePorts = new List<DialogueNodePort>();
 
     public List<LanguageGeneric<string>> Texts { get => _texts; set => _texts = value; }
     public List<LanguageGeneric<AudioClip>> AudioClips { get => _audioClips; set => _audioClips = value; }
-    public string Name { get => _name; set => _name = value; }
+    public string NameText { get => _nameText; set => _nameText = value; }
     public DialogueFaceImageType FaceImageType { get => _faceImageType; set => _faceImageType = value; }
     public List<DialogueNodePort> DialogueNodePorts { get => _dialogueNodePorts; set => _dialogueNodePorts = value; }
     public Sprite FaceImage { get => _faceImage; set => _faceImage = value; }
@@ -107,9 +106,9 @@ public class DialogueNode : BaseNode
         name_Field = new TextField("");
         name_Field.RegisterValueChangedCallback(value =>
         {
-            _name = value.newValue;
+            _nameText = value.newValue;
         });
-        name_Field.SetValueWithoutNotify(_name);
+        name_Field.SetValueWithoutNotify(_nameText);
         name_Field.AddToClassList("TextName");
         mainContainer.Add(name_Field);
 
@@ -187,7 +186,7 @@ public class DialogueNode : BaseNode
 
         faceImageType_field.SetValueWithoutNotify(_faceImageType);
 
-        name_Field.SetValueWithoutNotify(_name);
+        name_Field.SetValueWithoutNotify(_nameText);
     }
 
     public Port AddChoicePort(BaseNode baseNode, DialogueNodePort dialogueNodePort = null)
@@ -199,7 +198,7 @@ public class DialogueNode : BaseNode
 
         DialogueNodePort newDialogueNodePort = new DialogueNodePort();
         newDialogueNodePort.PortGUID = Guid.NewGuid().ToString();
-
+        newDialogueNodePort.MyPort = newPort;
         foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
         {
             newDialogueNodePort.TextLanguages.Add(new LanguageGeneric<string> 

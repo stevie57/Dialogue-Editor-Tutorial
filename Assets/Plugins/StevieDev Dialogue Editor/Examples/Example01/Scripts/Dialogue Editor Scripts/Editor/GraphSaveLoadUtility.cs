@@ -121,8 +121,8 @@ public class GraphSaveLoadUtility
             SavedNodeGUID = node.NodeGUID,
             Position = node.GetPosition().position,
             
-            TextType = node.Texts,
-            Name = node.Name,
+            TextLanguages = node.Texts,
+            Name = node.NameText,
             AudioClips = node.AudioClips,
             DialogueFaceImageType = node.FaceImageType,
             Sprite = node.FaceImage,
@@ -171,11 +171,11 @@ public class GraphSaveLoadUtility
         {
             DialogueNode tempNode = _graphView.CreateDialogue(node.Position);
             tempNode.NodeGUID = node.SavedNodeGUID;
-            tempNode.Name = node.Name;
+            tempNode.NameText = node.Name;
             tempNode.FaceImageType = node.DialogueFaceImageType;
             tempNode.FaceImage = node.Sprite;
 
-            foreach(LanguageGeneric<string> languageGeneric in node.TextType)
+            foreach(LanguageGeneric<string> languageGeneric in node.TextLanguages)
             {
                 tempNode.Texts.Find(language => language.LanguageType == languageGeneric.LanguageType).LanguageGenericType = languageGeneric.LanguageGenericType; ;
             }

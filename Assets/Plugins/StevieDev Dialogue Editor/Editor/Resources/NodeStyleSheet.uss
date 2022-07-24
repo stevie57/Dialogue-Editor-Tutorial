@@ -27,6 +27,7 @@
 	margin: auto;
 }
 
+/* ---- Event ---- */
 .EventBox
 {
 	flex-direction: row;	
@@ -47,3 +48,22 @@
 .EventBtn{
 
 }
+
+/* ---- Branch ---- */
+.BranchBox
+{
+	flex-direction: row;	
+}
+
+.BranchText{
+	min-width:150px;
+}
+
+.BranchID{
+	min-width:40px;
+}
+
+.BranchBtn{
+
+}
+

@@ -33,10 +33,11 @@ namespace StevieDev.DialogueEditor
             new SearchTreeGroupEntry(new GUIContent("Dialogue Editor"), 0),
             new SearchTreeGroupEntry(new GUIContent("Dialogue Node"), 1),
 
-            AddNodeSearch("Start Node", new StartNode()),
-            AddNodeSearch("Dialogue Node", new DialogueNode()),
-            AddNodeSearch("Event Node", new EventNode()),
-            AddNodeSearch("End Node", new EndNode()),
+            AddNodeSearch("Start", new StartNode()),
+            AddNodeSearch("Dialogue", new DialogueNode()),
+            AddNodeSearch("Event", new EventNode()),
+            AddNodeSearch("End", new EndNode()),
+            AddNodeSearch("Branch", new BranchNode())
         };
             return tree;
         }
@@ -84,6 +85,9 @@ namespace StevieDev.DialogueEditor
                     return true;
                 case EndNode node:
                     _graphView.AddElement(_graphView.CreateEnd(position));
+                    return true;
+                case BranchNode node:
+                    _graphView.AddElement(_graphView.CreateBranch(position));
                     return true;
             }
             return false;

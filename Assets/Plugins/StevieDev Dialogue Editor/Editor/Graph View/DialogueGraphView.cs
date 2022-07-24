@@ -98,5 +98,9 @@ namespace StevieDev.DialogueEditor
         {
             return new EndNode(position, _editorWindow, this);
         }
+        public BranchNode CreateBranch(Vector2 position)
+        {
+            return new BranchNode(position, _editorWindow, this);
+        }
     }
 }

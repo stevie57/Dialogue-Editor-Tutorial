@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -11,7 +12,7 @@ namespace StevieDev.DialogueEditor
     public class GraphSaveLoadUtility
     {
         private DialogueGraphView _graphView;
-        private List<Edge> _edes => _graphView.edges.ToList();
+        private List<Edge> _edges => _graphView.edges.ToList();
         private List<BaseNode> _nodes => _graphView.nodes.ToList().Where(node => node is BaseNode).Cast<BaseNode>().ToList();
 
         public GraphSaveLoadUtility(DialogueGraphView graphView)
@@ -40,7 +41,7 @@ namespace StevieDev.DialogueEditor
         {
             dialogueContainerSO.NodeLinkDatas.Clear();
 
-            Edge[] connectedEdges = _edes.Where(edge => edge.input.node != null).ToArray();
+            Edge[] connectedEdges = _edges.Where(edge => edge.input.node != null).ToArray();
             for (int i = 0; i < connectedEdges.Count(); i++)
             {
                 BaseNode outputNode = connectedEdges[i].output.node as BaseNode;
@@ -62,6 +63,7 @@ namespace StevieDev.DialogueEditor
             dialogeContainerSO.DialogueNodeDatas.Clear();
             dialogeContainerSO.EventNodeDatas.Clear();
             dialogeContainerSO.EndNodeDatas.Clear();
+            dialogeContainerSO.BranchNodeDatas.Clear();
 
             foreach (BaseNode node in _nodes)
             {
@@ -78,6 +80,11 @@ namespace StevieDev.DialogueEditor
                         break;
                     case EndNode endNode:
                         dialogeContainerSO.EndNodeDatas.Add(SaveNodeData(endNode));
+                        break;
+                    case BranchNode branchNode:
+                        dialogeContainerSO.BranchNodeDatas.Add(SaveNodeData(branchNode));
+                        break;
+                    default:
                         break;
                 }
             }
@@ -138,7 +145,7 @@ namespace StevieDev.DialogueEditor
             {
                 nodePort.OutputGUID = string.Empty;
                 nodePort.InputGUID = string.Empty;
-                foreach (Edge edge in _edes)
+                foreach (Edge edge in _edges)
                 {
                     if (edge.output.portName == nodePort.PortGUID)
                     {
@@ -149,13 +156,34 @@ namespace StevieDev.DialogueEditor
             }
             return dialogueNodeData;
         }
+
+        private BranchNodeData SaveNodeData(BranchNode node)
+        {
+            // Go through all edges and find the ones connected to this node and then turn it into a list
+            //List<Edge> tmpEdges = _edges.Where(x => x.output.node == node).Cast<Edge>().ToList();
+            
+            Edge trueOutput = _edges.FirstOrDefault(x => x.output.node == node && x.output.portName == "True");
+            Edge falseOutput = _edges.FirstOrDefault(x => x.output.node == node && x.output.portName == "False");
+
+            BranchNodeData nodeData = new BranchNodeData()
+            {
+                SavedNodeGUID = node.NodeGUID,
+                Position = node.GetPosition().position,
+                BranchStringIdDatas = node.BranchStringIdData,
+                TrueGuiNode = (trueOutput != null ? (trueOutput.input.node as BaseNode).NodeGUID : String.Empty),
+                FalseGuiNode = (falseOutput != null ? (falseOutput.input.node as BaseNode).NodeGUID : string.Empty)
+            };
+
+            return nodeData;
+        }
+
         #endregion
 
         #region Load
 
         private void ClearGraph()
         {
-            _edes.ForEach(edge => { _graphView.RemoveElement(edge); });
+            _edges.ForEach(edge => { _graphView.RemoveElement(edge); });
             _nodes.ForEach(node => { _graphView.RemoveElement(node); });
         }
 
@@ -198,6 +226,7 @@ namespace StevieDev.DialogueEditor
                 _graphView.AddElement(tempNode);
             }
 
+            // Create Event Nodes
             foreach (EventNodeData node in dialogueContainerSO.EventNodeDatas)
             {
                 EventNode tempNode = _graphView.CreateEvent(node.Position);
@@ -216,6 +245,23 @@ namespace StevieDev.DialogueEditor
                 _graphView.AddElement(tempNode);
             }
 
+            //Create Branch Nodes
+            foreach(BranchNodeData node in dialogueContainerSO.BranchNodeDatas)
+            {
+                BranchNode tempNode = _graphView.CreateBranch(node.Position);
+                tempNode.NodeGUID = node.SavedNodeGUID;
+
+                foreach(BranchStringIdData item in node.BranchStringIdDatas)
+                {
+                    tempNode.AddCondition(item);
+                }
+
+                tempNode.LoadValueInToField();
+                //tempNode.ReloadLanguage();
+                _graphView.AddElement(tempNode);
+            }
+
+            // Create End Nodes
             foreach (EndNodeData node in dialogueContainerSO.EndNodeDatas)
             {
                 EndNode tempNode = _graphView.CreateEnd(node.Position);
@@ -254,37 +300,6 @@ namespace StevieDev.DialogueEditor
                     }
                 }
             }
-
-            // make connection for dialogue nodes
-            //List<DialogueNode> dialogueNodes = _nodes.FindAll(node => node is DialogueNode).Cast<DialogueNode>().ToList();
-
-            //foreach (DialogueNode dialogueNode in dialogueNodes)
-            //{
-            //    foreach (DialogueNodePort nodePort in dialogueNode.DialogueNodePorts)
-            //    {
-            //        // Check if the port has a connection
-            //        if (nodePort.InputGUID != string.Empty)
-            //        {
-            //            // Find target node with ID
-            //            BaseNode targetNode = _nodes.Find(node => node.NodeGUID == nodePort.InputGUID);
-
-            //            Port myPort = null;
-
-            //            // Check all child of output containers which will contains port
-            //            for (int i = 0; i < dialogueNode.outputContainer.childCount; i++)
-            //            {
-            //                // Find port with same ID, we use portName as ID.
-            //                if (dialogueNode.outputContainer[i].Q<Port>().portName == nodePort.PortGUID)
-            //                {
-            //                    myPort = dialogueNode.outputContainer[i].Q<Port>();
-            //                }
-            //            }
-
-            //            // Make the edge connection between the two ports
-            //            LinkNodesTogether(myPort, (Port)targetNode.inputContainer[0]);
-            //        }
-            //    }
-            //}
         }
 
         private void LinkNodesTogether(Port outputPort, Port inputPort)

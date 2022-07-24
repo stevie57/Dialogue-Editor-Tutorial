@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +12,7 @@ namespace StevieDev.DialogueEditor
         public List<NodeLinkData> NodeLinkDatas = new List<NodeLinkData>();
         public List<StartNodeData> StartNodeDatas = new List<StartNodeData>();
         public List<DialogueNodeData> DialogueNodeDatas = new List<DialogueNodeData>();
+        public List<BranchNodeData> BranchNodeDatas = new List<BranchNodeData>();
         public List<EventNodeData> EventNodeDatas = new List<EventNodeData>();
         public List<EndNodeData> EndNodeDatas = new List<EndNodeData>();
 
@@ -25,6 +25,7 @@ namespace StevieDev.DialogueEditor
                 tmp.AddRange(EndNodeDatas);
                 tmp.AddRange(EventNodeDatas);
                 tmp.AddRange(EndNodeDatas);
+                tmp.AddRange(BranchNodeDatas);
                 return tmp;
             }
         }
@@ -86,7 +87,24 @@ namespace StevieDev.DialogueEditor
 
     #endregion
 
+    #region BranchNode
     [System.Serializable]
+    public class BranchNodeData : BaseNodeData
+    {
+        public string TrueGuiNode;
+        public string FalseGuiNode;
+        public List<BranchStringIdData> BranchStringIdDatas;
+    }
+
+    [System.Serializable]
+    public class BranchStringIdData
+    {
+        public string StringEvent;
+        public int IdNumber;
+    }
+    #endregion
+
+        [System.Serializable]
     public class EndNodeData : BaseNodeData
     {
         public EndNodeType EndNodeType;

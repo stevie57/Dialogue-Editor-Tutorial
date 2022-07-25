@@ -68,7 +68,7 @@ namespace StevieDev.Dialogue
     }
 
     [System.Serializable]
-    public class Container_StringEventModifier
+    public class Container_StringEventModifierType
     {
 #if UNITY_EDITOR
         public EnumField EnumField;
@@ -93,7 +93,7 @@ namespace StevieDev.Dialogue
         public Container_String StringEventText = new Container_String();
         public Container_Float Number = new Container_Float();
 
-        public Container_StringEventModifier StringEventModifierType = new Container_StringEventModifier();
+        public Container_StringEventModifierType StringEventModifierType = new Container_StringEventModifierType();
     }
 
     [System.Serializable]

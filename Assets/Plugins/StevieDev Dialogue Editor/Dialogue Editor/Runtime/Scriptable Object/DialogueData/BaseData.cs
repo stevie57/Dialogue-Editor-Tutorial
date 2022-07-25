@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace StevieDev.Dialogue
 {
-    public class DialogueData
+    [System.Serializable]
+    public class BaseData
     {
-
+        public string NodeGuid;
+        public Vector2 Position;
     }
 }

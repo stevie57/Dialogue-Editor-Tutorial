@@ -6,9 +6,9 @@ namespace StevieDev.Dialogue
 {
     public enum EndNodeType
     {
-        End,
-        Repeat,
-        GoBack,
-        ReturnToStart
+        End = 1,
+        Repeat = 2,
+        GoBack = 3,
+        ReturnToStart = 4
     }
 }

@@ -9,28 +9,38 @@ namespace StevieDev.Dialogue
     [System.Serializable]
     public class DialogueContainerSO : ScriptableObject
     {
-        //    public List<NodeLinkData> NodeLinkDatas = new List<NodeLinkData>();
-        //    public List<StartNodeData> StartNodeDatas = new List<StartNodeData>();
-        //    public List<DialogueNodeData> DialogueNodeDatas = new List<DialogueNodeData>();
-        //    public List<BranchNodeData> BranchNodeDatas = new List<BranchNodeData>();
-        //    public List<EventNodeData> EventNodeDatas = new List<EventNodeData>();
-        //    public List<EndNodeData> EndNodeDatas = new List<EndNodeData>();
+        public List<NodeLinkData> NodeLinkDatas = new List<NodeLinkData>();
 
-        //    public List<BaseNodeData> AllNodes
-        //    {
-        //        get
-        //        {
-        //            List<BaseNodeData> tmp = new List<BaseNodeData>();
-        //            tmp.AddRange(DialogueNodeDatas);
-        //            tmp.AddRange(EndNodeDatas);
-        //            tmp.AddRange(EventNodeDatas);
-        //            tmp.AddRange(EndNodeDatas);
-        //            tmp.AddRange(BranchNodeDatas);
-        //            return tmp;
-        //        }
-        //    }
-        //}
+        public List<StartData> StartDatas = new List<StartData>();
+        public List<DialogueData> DialogueDatas = new List<DialogueData>();
+        public List<BranchData> BranchDatas = new List<BranchData>();
+        public List<EventData> EventDatas = new List<EventData>();
+        public List<EndData> EndDatas = new List<EndData>();
+        public List<ChoiceData> ChoiceDatas = new List<ChoiceData>();
 
+        public List<BaseData> AllDatas
+        {
+            get
+            {
+                List<BaseData> tmp = new List<BaseData>();
+                tmp.AddRange(StartDatas);
+                tmp.AddRange(EndDatas);
+                tmp.AddRange(EventDatas);
+                tmp.AddRange(BranchDatas);
+                tmp.AddRange(DialogueDatas);
+                tmp.AddRange(ChoiceDatas);
+                return tmp;
+            }
+        }
+    }
 
+    [System.Serializable]
+    public class NodeLinkData
+    {
+        public string BaseNodeGuid;
+        public string BasePortName;
+        public string TargetNodeGuid;
+        public string TargetPortName;
     }
 }
+

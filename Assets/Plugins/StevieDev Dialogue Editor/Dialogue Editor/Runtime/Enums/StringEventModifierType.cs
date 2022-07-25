@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace StevieDev.Dialogue
 {
-    public class BranchData
+    public enum StringEventModifierType
     {
-
+        SetTrue = 1,
+        SetFalse = 2,
+        Add = 3,
+        Subtract = 4
     }
 }

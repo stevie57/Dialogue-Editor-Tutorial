@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace StevieDev.Dialogue
 {
-    public class EventData
+    [System.Serializable]
+    public class StartData : BaseData
     {
 
     }

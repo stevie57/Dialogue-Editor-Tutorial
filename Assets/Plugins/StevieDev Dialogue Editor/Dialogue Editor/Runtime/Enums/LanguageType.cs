@@ -6,7 +6,7 @@ namespace StevieDev.Dialogue
 {
     public enum LanguageType
     {
-        English,
-        French
+        English = 1,
+        French = 2
     }
 }

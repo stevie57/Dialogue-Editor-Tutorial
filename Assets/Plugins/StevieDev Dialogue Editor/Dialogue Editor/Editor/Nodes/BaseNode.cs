@@ -312,7 +312,7 @@ namespace StevieDev.Dialogue.Editor
         /// <param name="USS01">USS class add to the UI Element</param>
         /// <param name="USS02">USS class add to the UI Element</param>
         /// <returns></returns>
-        protected EnumField GetEnumField_StringEventEventConditionType(Container_StringEventConditionType enumType, Action action, string USS01 = "", string USS02 = "")
+        protected EnumField GetEnumField_StringEventConditionType(Container_StringEventConditionType enumType, Action action, string USS01 = "", string USS02 = "")
         {
             EnumField enumField = new EnumField()
             {
@@ -537,6 +537,64 @@ namespace StevieDev.Dialogue.Editor
             RefreshExpandedState();
         }
 
+        /// <summary>
+        /// Add String Condition Event to UI element.
+        /// </summary>
+        /// <param name="stringEventCondition">The List<EventData_StringCondition> that EventData_StringCondition should be added to.</param>
+        /// <param name="stringEvent">EventData_StringCondition that should be use.</param>
+        protected void AddStringConditionEventBuild(List<EventData_StringCondition> stringEventCondition, EventData_StringCondition stringEvent = null)
+        {
+            EventData_StringCondition tmpStringEventCondition = new EventData_StringCondition();
+
+            // If we paramida value is not null we load in values.
+            if (stringEvent != null)
+            {
+                tmpStringEventCondition.StringEventText.Value = stringEvent.StringEventText.Value;
+                tmpStringEventCondition.Number.Value = stringEvent.Number.Value;
+                tmpStringEventCondition.StringEventConditionType.Value = stringEvent.StringEventConditionType.Value;
+            }
+
+            stringEventCondition.Add(tmpStringEventCondition);
+
+            // Container of all object.
+            Box boxContainer = new Box();
+            Box boxfloatField = new Box();
+            boxContainer.AddToClassList("StringEventBox");
+            boxfloatField.AddToClassList("StringEventBoxfloatField");
+
+            // Text.
+            TextField textField = GetNewTextField(tmpStringEventCondition.StringEventText, "String Event", "StringEventText");
+
+            // ID number.
+            FloatField floatField = GetNewFloatField(tmpStringEventCondition.Number, "StringEventInt");
+
+            // Check for StringEventType and add the proper one.
+            EnumField enumField = null;
+            // String Event Condition
+            Action tmp = () => ShowHide_StringEventConditionType(tmpStringEventCondition.StringEventConditionType.Value, boxfloatField);
+            // EnumField String Event Condition
+            enumField = GetEnumField_StringEventConditionType(tmpStringEventCondition.StringEventConditionType, tmp, "StringEventEnum");
+            // Run the show and hide.
+            ShowHide_StringEventConditionType(tmpStringEventCondition.StringEventConditionType.Value, boxfloatField);
+
+            // Remove button.
+            Button btn = GetNewButton("X", "removeBtn");
+            btn.clicked += () =>
+            {
+                stringEventCondition.Remove(tmpStringEventCondition);
+                DeleteBox(boxContainer);
+            };
+
+            // Add it to the box
+            boxContainer.Add(textField);
+            boxContainer.Add(enumField);
+            boxfloatField.Add(floatField);
+            boxContainer.Add(boxfloatField);
+            boxContainer.Add(btn);
+
+            mainContainer.Add(boxContainer);
+            RefreshExpandedState();
+        }
 
         /// <summary>
         /// hid and show the UI element
@@ -546,6 +604,23 @@ namespace StevieDev.Dialogue.Editor
         private void ShowHide_StringEventModifierType(StringEventModifierType value, Box boxContainer)
         {
             if (value == StringEventModifierType.SetTrue || value == StringEventModifierType.SetFalse)
+            {
+                ShowHide(false, boxContainer);
+            }
+            else
+            {
+                ShowHide(true, boxContainer);
+            }
+        }
+
+        /// <summary>
+        /// hid and show the UI element
+        /// </summary>
+        /// <param name="value">StringEventConditionType</param>
+        /// <param name="boxContainer">The Box that will be hidden or shown</param>
+        private void ShowHide_StringEventConditionType(StringEventConditionType value, Box boxContainer)
+        {
+            if (value == StringEventConditionType.True || value == StringEventConditionType.False)
             {
                 ShowHide(false, boxContainer);
             }

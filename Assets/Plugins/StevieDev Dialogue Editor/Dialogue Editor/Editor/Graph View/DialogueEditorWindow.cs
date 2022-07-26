@@ -10,14 +10,14 @@ namespace StevieDev.Dialogue.Editor
 {
     public class DialogueEditorWindow : EditorWindow
     {
-        private DialogueContainerSO _currentDialogueContainer;          // Current open dialogue container in dialogue editor window
-        private DialogueGraphView _graphView;                           // Reference to GraphView Class
-        private GraphSaveLoadUtility _saveAndLoad;                      // Reference to SaveAndLoad Class
+        private DialogueContainerSO _currentDialogueContainer;                                  // Current open dialogue container in dialogue editor window
+        private DialogueGraphView _graphView;                                                   // Reference to GraphView Class
+        private GraphSaveLoadUtility _saveAndLoad;                                              // Reference to SaveAndLoad Class
 
-        private LanguageType _selectedLanguage = LanguageType.English;  // Current selected language in the dialogue editor window
-        private ToolbarMenu _languageDropDownMenu;                      // Languages toolbar menu in the top of the dialogue editor window
-        private Label DialogueContainerName;                            // Name of the current open dialogue container
-        private string _graphViewStyleSheet = "GraphViewStyleSheet";         // Name of the graph view style sheet
+        private LanguageType _selectedLanguage = LanguageType.English;                          // Current selected language in the dialogue editor window
+        private ToolbarMenu _languagesDropDownMenu;                                             // Languages toolbar menu in the top of the dialogue editor window
+        private Label DialogueContainerName;                                                    // Name of the current open dialogue container
+        private string _graphViewStyleSheet = "USS/EditorWindow/EditorWindowStyleSheet";        // Name of the graph view style sheet   
 
         /// <summary>
         /// Current selected language in the dialogue editor window
@@ -78,11 +78,11 @@ namespace StevieDev.Dialogue.Editor
             toolbar.Add(loadBtn);
 
             //dropdown menu names
-            _languageDropDownMenu = new ToolbarMenu();
+            _languagesDropDownMenu = new ToolbarMenu();
             // Convert language enum into an array and create a button for each language
             foreach (LanguageType language in (LanguageType[])Enum.GetValues(typeof(LanguageType)))
             {
-                _languageDropDownMenu.menu.AppendAction(
+                _languagesDropDownMenu.menu.AppendAction(
                     language.ToString(),  // language name 
                     new Action<DropdownMenuAction> // button action
                     (
@@ -90,7 +90,7 @@ namespace StevieDev.Dialogue.Editor
                     )
                 );
             }
-            toolbar.Add(_languageDropDownMenu);
+            toolbar.Add(_languagesDropDownMenu);
 
             // Nmae of current dialgoe container you have opened
             DialogueContainerName = new Label($"");
@@ -132,12 +132,13 @@ namespace StevieDev.Dialogue.Editor
         }
 
         /// <summary>
-        /// Will change the language in the dialogue editor window
+        /// Will change the language in the dialogue editor window.
         /// </summary>
-        /// <param name="language">Target language you want to change to</param> 
+        /// <param name="language">Language that you want to change to</param>
         private void Language(LanguageType language)
         {
-            _languageDropDownMenu.text = $"Language : {language.ToString()}";
+            if(_languagesDropDownMenu != null)
+            _languagesDropDownMenu.text = "Language: " + language.ToString();
             _selectedLanguage = language;
             _graphView.ReloadLanguage();
         }

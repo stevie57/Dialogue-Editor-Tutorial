@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace StevieDev.Dialogue.Editor
 {
@@ -44,11 +43,6 @@ namespace StevieDev.Dialogue.Editor
 
             titleButtonContainer.Add(menu);
         }
-
-        //public void AddCondition(BranchStringIdData paramBranchString = null)
-        //{
-
-        //}
 
     }
 }

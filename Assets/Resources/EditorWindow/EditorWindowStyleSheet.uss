@@ -1,0 +1,12 @@
+.nameOfDialougeContainer
+{
+	margin-top: 3px;
+	margin-left: 5px;
+	padding-rigth: 5px;
+}
+/*.DialogueContainerName
+{
+	margin-top: 3px;
+	margin-left: 5px;
+	padding-right: 5px;
+}*/

@@ -10,11 +10,11 @@ namespace StevieDev.Dialogue.Editor
 {
     public class BaseNode : Node
     {
-        private string nodeGUID;
+        protected string _nodeGUID;
         protected DialogueGraphView _graphView;
         protected DialogueEditorWindow _editorWindow;
         protected Vector2 _defaultNodeSize = new Vector2(200, 250);
-        public string NodeGUID { get => nodeGUID; set => nodeGUID = value; }
+        public string NodeGUID { get => _nodeGUID; set => _nodeGUID = value; }
 
 
         private List<LanguageGenericHolder_Text> _languageGenericsList_Texts = new List<LanguageGenericHolder_Text>();
@@ -437,11 +437,12 @@ namespace StevieDev.Dialogue.Editor
         /// <param name="portName">The name of the port</param>
         /// <param name="capacity">Can it accept multiple or a single edge</param>
         /// <returns> Get the port that was just added to the inputContainer</returns>
-        public void AddInputPort(string portName, Port.Capacity capacity = Port.Capacity.Multi)
+        public Port AddInputPort(string portName, Port.Capacity capacity = Port.Capacity.Multi)
         {
             Port inputPort = GetPortInstance(Direction.Input, capacity);
             inputPort.portName = portName;
             inputContainer.Add(inputPort);
+            return inputPort;
         }
 
         /// <summary>

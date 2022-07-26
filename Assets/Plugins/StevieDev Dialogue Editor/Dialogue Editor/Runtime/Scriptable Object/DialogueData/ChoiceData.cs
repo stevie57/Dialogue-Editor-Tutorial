@@ -16,10 +16,9 @@ namespace StevieDev.Dialogue
         public TextField TextField { get; set; }
         public ObjectField ObjectField { get; set; }
 #endif
-
-        public Container_ChoiceStateType ChoiceStateType = new Container_ChoiceStateType();
+        public Container_ChoiceStateType ChoiceStateTypes = new Container_ChoiceStateType();
         public List<LanguageGeneric<string>> Text = new List<LanguageGeneric<string>>();
         public List<LanguageGeneric<AudioClip>> AudioClips = new List<LanguageGeneric<AudioClip>>();
-        public List<EventData_StringCondition> ConditionData_StringEvents = new List<EventData_StringCondition>();
+        public List<EventData_StringCondition> EventData_StringConditions = new List<EventData_StringCondition>();
     }
 }

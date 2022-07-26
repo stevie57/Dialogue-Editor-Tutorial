@@ -37,7 +37,8 @@ namespace StevieDev.Dialogue.Editor
             AddNodeSearch("Dialogue", new DialogueNode()),
             AddNodeSearch("Event", new EventNode()),
             AddNodeSearch("End", new EndNode()),
-            AddNodeSearch("Branch", new BranchNode())
+            AddNodeSearch("Branch", new BranchNode()),
+            AddNodeSearch("Choice", new ChoiceNode())
         };
             return tree;
         }
@@ -75,19 +76,22 @@ namespace StevieDev.Dialogue.Editor
             switch (searchTreeEntry.userData)
             {
                 case StartNode node:
-                    _graphView.AddElement(_graphView.CreateStart(position));
+                    _graphView.AddElement(_graphView.CreateStartNode(position));
                     return true;
                 case DialogueNode node:
-                    _graphView.AddElement(_graphView.CreateDialogue(position));
+                    _graphView.AddElement(_graphView.CreateDialogueNode(position));
                     return true;
                 case EventNode node:
-                    _graphView.AddElement(_graphView.CreateEvent(position));
+                    _graphView.AddElement(_graphView.CreateEventNode(position));
                     return true;
                 case EndNode node:
-                    _graphView.AddElement(_graphView.CreateEnd(position));
+                    _graphView.AddElement(_graphView.CreateEndNode(position));
                     return true;
                 case BranchNode node:
-                    _graphView.AddElement(_graphView.CreateBranch(position));
+                    _graphView.AddElement(_graphView.CreateBranchNode(position));
+                    return true;
+                case ChoiceNode node:
+                    _graphView.AddElement(_graphView.CreateChoiceNode(position));
                     return true;
             }
             return false;

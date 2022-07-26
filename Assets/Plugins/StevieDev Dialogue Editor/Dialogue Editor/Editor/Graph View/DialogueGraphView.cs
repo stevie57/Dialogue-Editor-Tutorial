@@ -9,7 +9,7 @@ namespace StevieDev.Dialogue.Editor
 {
     public class DialogueGraphView : GraphView
     {
-        private string _graphViewStyleSheet = "GraphViewStyleSheet";
+        private string _graphViewStyleSheet = "USS/GraphView/GraphViewStyleSheet";
         private DialogueEditorWindow _editorWindow;
         private NodeSearchWindow _searchWindow;
 
@@ -81,26 +81,66 @@ namespace StevieDev.Dialogue.Editor
             return compatiblePorts;
         }
 
-        public StartNode CreateStart(Vector2 position)
+        // Make Node's -----------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Make new Start Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>Start Node</returns>
+        public StartNode CreateStartNode(Vector2 position)
         {
             return new StartNode(position, _editorWindow, this);
         }
 
-        public DialogueNode CreateDialogue(Vector2 position)
-        {
-            return new DialogueNode(position, _editorWindow, this);
-        }
-        public EventNode CreateEvent(Vector2 position)
-        {
-            return new EventNode(position, _editorWindow, this);
-        }
-        public EndNode CreateEnd(Vector2 position)
+        /// <summary>
+        /// Make new End Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>End Node</returns>
+        public EndNode CreateEndNode(Vector2 position)
         {
             return new EndNode(position, _editorWindow, this);
         }
-        public BranchNode CreateBranch(Vector2 position)
+
+        /// <summary>
+        /// Make new Event Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>Event Node</returns>
+        public EventNode CreateEventNode(Vector2 position)
+        {
+            return new EventNode(position, _editorWindow, this);
+        }
+
+        /// <summary>
+        /// Make new Dialogue Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>Dialogue Node</returns>
+        public DialogueNode CreateDialogueNode(Vector2 position)
+        {
+            return new DialogueNode(position, _editorWindow, this);
+        }
+
+        /// <summary>
+        /// Make new Branch Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>Branch Node</returns>
+        public BranchNode CreateBranchNode(Vector2 position)
         {
             return new BranchNode(position, _editorWindow, this);
+        }
+
+        /// <summary>
+        /// Make new Choice Node and set it's position.
+        /// </summary>
+        /// <param name="position">position of where to place the node</param>
+        /// <returns>Choice Node</returns>
+        public ChoiceNode CreateChoiceNode(Vector2 position)
+        {
+            return new ChoiceNode(position, _editorWindow, this);
         }
     }
 }

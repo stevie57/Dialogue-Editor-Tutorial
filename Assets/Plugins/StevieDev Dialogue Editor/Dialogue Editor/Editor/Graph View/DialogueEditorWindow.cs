@@ -60,7 +60,7 @@ namespace StevieDev.Dialogue.Editor
             _graphView = new DialogueGraphView(this);
             _graphView.StretchToParentSize();
             rootVisualElement.Add(_graphView);
-            //_saveAndLoad = new GraphSaveLoadUtility(_graphView);
+            _saveAndLoad = new GraphSaveLoadUtility(_graphView);
             StyleSheet styleSheet = Resources.Load<StyleSheet>(_graphViewStyleSheet);
             rootVisualElement.styleSheets.Add(styleSheet);
         }
@@ -113,7 +113,7 @@ namespace StevieDev.Dialogue.Editor
             else
             {
                 Debug.Log($"Saved graph !");
-                //_saveAndLoad.Save(_currentDialogueContainer);
+                _saveAndLoad.Save(_currentDialogueContainer);
             }
         }
 
@@ -127,7 +127,7 @@ namespace StevieDev.Dialogue.Editor
             {
                 Language(LanguageType.English);
                 DialogueContainerName.text = $"Name: {_currentDialogueContainer.name}";
-                //_saveAndLoad.Load(_currentDialogueContainer);
+                _saveAndLoad.Load(_currentDialogueContainer);
             }
         }
 

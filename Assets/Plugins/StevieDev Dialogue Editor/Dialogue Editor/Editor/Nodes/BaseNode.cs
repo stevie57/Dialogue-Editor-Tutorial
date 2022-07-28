@@ -22,7 +22,7 @@ namespace StevieDev.Dialogue.Editor
 
         public BaseNode()
         {
-            StyleSheet styleSheet = Resources.Load<StyleSheet>("NodeStyleSheet");
+            StyleSheet styleSheet = Resources.Load<StyleSheet>("USS/Nodes/NodeStyleSheet");
             styleSheets.Add(styleSheet);
         }
 

@@ -10,12 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c6795ecbafcc1143a76f966e9cbcf3d, type: 3}
-  m_Name: Test Dialogue Container SO
+  m_Name: Test Dialogue
   m_EditorClassIdentifier: 
-  NodeLinkDatas: []
-  StartDatas: []
+  NodeLinkDatas:
+  - BaseNodeGuid: 1abb7540-33c5-4034-8d0c-4f17bdf76cb2
+    BasePortName: Output
+    TargetNodeGuid: 50305a8d-8059-4bbf-a75e-9389f8d8b93f
+    TargetPortName: Input
+  StartDatas:
+  - NodeGuid: 1abb7540-33c5-4034-8d0c-4f17bdf76cb2
+    Position: {x: 512, y: 190}
   DialogueDatas: []
   BranchDatas: []
   EventDatas: []
-  EndDatas: []
+  EndDatas:
+  - NodeGuid: 50305a8d-8059-4bbf-a75e-9389f8d8b93f
+    Position: {x: 670, y: 179}
+    EndNodeType:
+      Value: 1
   ChoiceDatas: []

@@ -309,6 +309,5 @@ namespace StevieDev.Dialogue.Editor
             boxContainer.Add(ImagePreviewBox);
             boxContainer.Add(ImagesBox);
         }
-
     }
 }

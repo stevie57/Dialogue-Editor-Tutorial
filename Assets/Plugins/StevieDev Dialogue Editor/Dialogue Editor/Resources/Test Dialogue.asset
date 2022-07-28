@@ -15,17 +15,53 @@ MonoBehaviour:
   NodeLinkDatas:
   - BaseNodeGuid: 1abb7540-33c5-4034-8d0c-4f17bdf76cb2
     BasePortName: Output
+    TargetNodeGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    TargetPortName: Input
+  - BaseNodeGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    BasePortName: Continue
     TargetNodeGuid: 50305a8d-8059-4bbf-a75e-9389f8d8b93f
+    TargetPortName: Input
+  - BaseNodeGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    BasePortName: 85b7d482-1b70-47b1-8df8-515855278432
+    TargetNodeGuid: cd8276c9-114e-45eb-b2ed-632ff505ef38
+    TargetPortName: Input
+  - BaseNodeGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    BasePortName: e347ef5b-beca-4804-a05a-55548c1c6ddf
+    TargetNodeGuid: 6610d82a-4992-4298-930c-9c9391011830
     TargetPortName: Input
   StartDatas:
   - NodeGuid: 1abb7540-33c5-4034-8d0c-4f17bdf76cb2
-    Position: {x: 512, y: 190}
-  DialogueDatas: []
+    Position: {x: 494, y: 179}
+  DialogueDatas:
+  - NodeGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    Position: {x: 625, y: 138}
+    DialogueData_Names: []
+    DialogueData_Texts: []
+    DialogueData_Images: []
+    DialogueData_Ports:
+    - ID:
+        Value: 0
+      PortGuid: e347ef5b-beca-4804-a05a-55548c1c6ddf
+      InputGuid: 6610d82a-4992-4298-930c-9c9391011830
+      OutputGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
+    - ID:
+        Value: 0
+      PortGuid: 85b7d482-1b70-47b1-8df8-515855278432
+      InputGuid: cd8276c9-114e-45eb-b2ed-632ff505ef38
+      OutputGuid: eb9d31fa-4495-47ef-a98f-3b19135a9919
   BranchDatas: []
   EventDatas: []
   EndDatas:
   - NodeGuid: 50305a8d-8059-4bbf-a75e-9389f8d8b93f
-    Position: {x: 670, y: 179}
+    Position: {x: 958, y: 106}
+    EndNodeType:
+      Value: 1
+  - NodeGuid: cd8276c9-114e-45eb-b2ed-632ff505ef38
+    Position: {x: 958, y: 385}
+    EndNodeType:
+      Value: 1
+  - NodeGuid: 6610d82a-4992-4298-930c-9c9391011830
+    Position: {x: 973, y: 236}
     EndNodeType:
       Value: 1
   ChoiceDatas: []

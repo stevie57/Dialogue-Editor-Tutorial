@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace StevieDev.Dialogue.Editor
 {
@@ -15,6 +16,9 @@ namespace StevieDev.Dialogue.Editor
         {
             _editorWindow = editorWindow;
             _graphView = graphView;
+
+            StyleSheet styleSheet = Resources.Load<StyleSheet>("USS/Nodes/StartNodeStyleSheet");
+            styleSheets.Add(styleSheet);
 
             title = "Start";
             SetPosition(new Rect(position, _defaultNodeSize));

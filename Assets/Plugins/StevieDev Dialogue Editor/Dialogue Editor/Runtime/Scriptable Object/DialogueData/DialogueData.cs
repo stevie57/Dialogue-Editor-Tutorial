@@ -10,13 +10,13 @@ namespace StevieDev.Dialogue
     [System.Serializable] 
     public class DialogueData : BaseData
     {
-        public List<DialogueData_BaseContainer> Dialogue_BaseContaienrs { get; set; } = new List<DialogueData_BaseContainer>();
+        public List<DialogueData_BaseContainer> Dialogue_BaseContainers { get; set; } = new List<DialogueData_BaseContainer>();
         public List<DialogueData_Name> DialogueData_Names = new List<DialogueData_Name>();
         public List<DialogueData_Text> DialogueData_Texts = new List<DialogueData_Text>();
         public List<DialogueData_Images> Dialoguedata_Images = new List<DialogueData_Images>();
         public List<DialogueData_Port> DialogueData_Ports = new List<DialogueData_Port>();
     }
-
+    
     [System.Serializable]
     public class DialogueData_BaseContainer
     {

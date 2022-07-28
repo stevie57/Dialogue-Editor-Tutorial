@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace StevieDev.Dialogue.Editor
 {
     public class BranchNode : BaseNode
     {
-        //private List<BranchStringIdData> _branchStringIdData= new List<BranchStringIdData>();
-
-        //public List<BranchStringIdData> BranchStringIdData { get => _branchStringIdData; set => _branchStringIdData = value; }
+        private BranchData _branchData = new BranchData();
+        public BranchData BranchData { get => _branchData; set => _branchData = value; }
 
         public BranchNode()
         {
@@ -39,9 +39,14 @@ namespace StevieDev.Dialogue.Editor
             ToolbarMenu menu = new ToolbarMenu();
             menu.text = "Add Condition";
 
-            //menu.menu.AppendAction("String Condition", new Action<DropdownMenuAction>(x => AddCondition()));
+            menu.menu.AppendAction("String Condition", new Action<DropdownMenuAction>(x => AddCondition()));
 
             titleButtonContainer.Add(menu);
+        }
+
+        public void AddCondition(EventData_StringCondition stringEvent = null)
+        {
+            AddStringConditionEventBuild(_branchData.EventData_StringConditions, stringEvent);
         }
 
     }

@@ -10,18 +10,46 @@
 	flex-direction: row;
 }
 
-.LabelText{
+/*.LabelText{
 	margin-right:auto;
 	font-size: 18px;
-}
+}*/
 
-.TextBtn{
+/*.TextBtn{
 	margin-left:auto;
+}*/
+
+.Label{
+	margin-top:5px;
+	margin-left:4px;
+	font-size: 15px;
 }
 
-.BoxRow{
-	flex-direction: row;
+/* ----------------- ChoiceTitleBox -----------------*/
+.ChoiceTitleBox{
+	margin-top:5px;
+	margin-left:4px;
+	font-size: 15px;
+	color:green;
 }
+
+.ChoiceDeleteButton{
+	background-color:red;
+}
+/* ----------------- keyword -----------------*/
+.KeywordEntryBox{
+	flex-direction: row;	
+}
+
+.KeywordEntryText{
+	min-width:160px;
+}
+
+.NoKeyWordsWarning{
+	color:red;
+}
+
+
 
 /* ----------------- Name -----------------*/
 .NameColor{
@@ -36,6 +64,18 @@
 {
 	flex-direction: row;	
 }
+
+
+/*------------------- Port ------------------*/
+.PortName
+{
+	display:none;
+}
+
+.PortEmptyTitle{
+	color:red
+}
+
 
 /* ----------------- Text -----------------*/
 

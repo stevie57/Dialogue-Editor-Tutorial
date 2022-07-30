@@ -33,13 +33,13 @@ namespace StevieDev.Dialogue.Editor
             new SearchTreeGroupEntry(new GUIContent("Dialogue Editor"), 0),
             new SearchTreeGroupEntry(new GUIContent("Dialogue Node"), 1),
 
+            AddNodeSearch("VR Dialogue Node", new VRDialogueNode()),
             AddNodeSearch("Start", new StartNode()),
             AddNodeSearch("Dialogue", new DialogueNode()),
             AddNodeSearch("Event", new EventNode()),
             AddNodeSearch("End", new EndNode()),
             AddNodeSearch("Branch", new BranchNode()),
             AddNodeSearch("Choice", new ChoiceNode()),
-            AddNodeSearch("VR Dialogue Node", new VRDialogueNode())
         };
             return tree;
         }

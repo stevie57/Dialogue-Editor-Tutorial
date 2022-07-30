@@ -142,5 +142,10 @@ namespace StevieDev.Dialogue.Editor
         {
             return new ChoiceNode(position, _editorWindow, this);
         }
+
+        public VRDialogueNode CreateVRDialogueNode(Vector2 position)
+        {
+            return new VRDialogueNode(position, _editorWindow, this);
+        }
     }
 }

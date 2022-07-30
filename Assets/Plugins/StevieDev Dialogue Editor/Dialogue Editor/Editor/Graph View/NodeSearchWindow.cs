@@ -38,7 +38,8 @@ namespace StevieDev.Dialogue.Editor
             AddNodeSearch("Event", new EventNode()),
             AddNodeSearch("End", new EndNode()),
             AddNodeSearch("Branch", new BranchNode()),
-            AddNodeSearch("Choice", new ChoiceNode())
+            AddNodeSearch("Choice", new ChoiceNode()),
+            AddNodeSearch("VR Dialogue Node", new VRDialogueNode())
         };
             return tree;
         }
@@ -92,6 +93,9 @@ namespace StevieDev.Dialogue.Editor
                     return true;
                 case ChoiceNode node:
                     _graphView.AddElement(_graphView.CreateChoiceNode(position));
+                    return true;
+                case VRDialogueNode node:
+                    _graphView.AddElement(_graphView.CreateVRDialogueNode(position));
                     return true;
             }
             return false;

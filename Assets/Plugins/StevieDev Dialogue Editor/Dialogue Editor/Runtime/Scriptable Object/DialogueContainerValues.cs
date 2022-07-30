@@ -26,7 +26,7 @@ namespace StevieDev.Dialogue
     [System.Serializable]
     public class Container_String
     {
-        public string Value;
+        public string Value = "";
     }
 
     [System.Serializable]

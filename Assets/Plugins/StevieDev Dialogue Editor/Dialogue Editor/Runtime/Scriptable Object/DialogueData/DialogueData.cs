@@ -55,6 +55,4 @@ namespace StevieDev.Dialogue
         public string InputGuid;
         public string OutputGuid;
     }
-
-
 }

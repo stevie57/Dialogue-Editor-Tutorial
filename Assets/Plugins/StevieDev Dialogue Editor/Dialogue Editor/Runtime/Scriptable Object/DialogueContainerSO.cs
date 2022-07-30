@@ -17,6 +17,7 @@ namespace StevieDev.Dialogue
         public List<EventData> EventDatas = new List<EventData>();
         public List<EndData> EndDatas = new List<EndData>();
         public List<ChoiceData> ChoiceDatas = new List<ChoiceData>();
+        public List<VRDialogueData> VRDialogueDatas = new List<VRDialogueData>();
 
         public List<BaseData> AllDatas
         {
@@ -29,6 +30,7 @@ namespace StevieDev.Dialogue
                 tmp.AddRange(BranchDatas);
                 tmp.AddRange(DialogueDatas);
                 tmp.AddRange(ChoiceDatas);
+                tmp.AddRange(VRDialogueDatas);
                 return tmp;
             }
         }

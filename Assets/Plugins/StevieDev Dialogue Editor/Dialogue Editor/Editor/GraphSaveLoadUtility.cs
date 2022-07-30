@@ -13,7 +13,6 @@ namespace StevieDev.Dialogue.Editor
     {
         private List<Edge> _edges => _graphView.edges.ToList();
         private List<BaseNode> _nodes => _graphView.nodes.ToList().Where(node => node is BaseNode).Cast<BaseNode>().ToList();
-
         private DialogueGraphView _graphView;
 
         public GraphSaveLoadUtility(DialogueGraphView graphView)
@@ -66,6 +65,7 @@ namespace StevieDev.Dialogue.Editor
             dialogueContainerSO.BranchDatas.Clear();
             dialogueContainerSO.DialogueDatas.Clear();
             dialogueContainerSO.ChoiceDatas.Clear();
+            dialogueContainerSO.VRDialogueDatas.Clear();
 
             _nodes.ForEach(node =>
             {
@@ -88,6 +88,9 @@ namespace StevieDev.Dialogue.Editor
                         break;
                     case ChoiceNode choiceNode:
                         dialogueContainerSO.ChoiceDatas.Add(SaveNodeData(choiceNode));
+                        break;
+                    case VRDialogueNode vrDialogueNode:
+                        dialogueContainerSO.VRDialogueDatas.Add(SaveNodeData(vrDialogueNode));
                         break;
                     default:
                         break;
@@ -224,7 +227,6 @@ namespace StevieDev.Dialogue.Editor
 
                 newNodeData.EventData_StringModifiers.Add(tmp);
             }
-
             return newNodeData;
         }
 
@@ -279,6 +281,56 @@ namespace StevieDev.Dialogue.Editor
             }
 
             return newChoiceNodeData;
+        }
+
+        private VRDialogueData SaveNodeData(VRDialogueNode node)
+        {
+            VRDialogueData newVRDialogueData = new VRDialogueData()
+            {
+                NodeGuid = node.NodeGUID,
+                Position = node.GetPosition().position,
+            };
+
+            newVRDialogueData.DialogueTimeline = node.VRDialogueData.DialogueTimeline;
+            newVRDialogueData.NodeTitle = node.VRDialogueData.NodeTitle;
+
+            // Port
+            foreach (VRChoiceData choice in node.VRDialogueData.ChoiceLists)
+            {
+                VRChoiceData newChoiceData = new VRChoiceData();
+                newChoiceData.ChoiceName = choice.ChoiceName;
+                newChoiceData.Keywords.AddRange(choice.Keywords);
+                newChoiceData.ChoicePort.PortGuid = choice.ChoicePort.PortGuid;
+                newChoiceData.ChoicePort.OutputGuid = String.Empty;
+                newChoiceData.ChoicePort.InputGuid = String.Empty;
+
+                foreach(Edge edge in _edges)
+                {
+                    if (edge.output.portName == choice.ChoicePort.PortGuid)
+                    {
+                        newChoiceData.ChoicePort.OutputGuid = (edge.output.node as BaseNode).NodeGUID;
+                        newChoiceData.ChoicePort.InputGuid = (edge.input.node as BaseNode).NodeGUID;
+                    }
+                }
+
+                //DialogueData_Port portData = new DialogueData_Port();
+
+                //portData.OutputGuid = string.Empty;
+                //portData.InputGuid = string.Empty;
+                ////portData.PortGuid = port.PortGuid;
+                //portData.PortGuid = choice.ChoicePort.PortGuid;
+
+                //foreach (Edge edge in _edges)
+                //{
+                //    if (edge.output.portName == choice.ChoicePort.PortGuid)
+                //    {
+                //        portData.OutputGuid = (edge.output.node as BaseNode).NodeGUID;
+                //        portData.InputGuid = (edge.input.node as BaseNode).NodeGUID;
+                //    }
+                //}
+                newVRDialogueData.ChoiceLists.Add(newChoiceData);
+            }
+            return newVRDialogueData;
         }
         #endregion
 
@@ -432,6 +484,24 @@ namespace StevieDev.Dialogue.Editor
 
                 tempNode.LoadValueInToField();
                 tempNode.ReloadLanguage();
+                _graphView.AddElement(tempNode);
+            }
+
+            // VR dialogue node
+            foreach(VRDialogueData node in dialogueContainer.VRDialogueDatas)
+            {
+                VRDialogueNode tempNode = _graphView.CreateVRDialogueNode(node.Position);
+                tempNode.NodeGUID = node.NodeGuid;
+                tempNode.VRDialogueData.NodeTitle = node.NodeTitle;
+                tempNode.AddCustomDialogueNodeTitle(tempNode.VRDialogueData.NodeTitle);
+
+                tempNode.VRDialogueData.DialogueTimeline = node.DialogueTimeline;
+                tempNode.AddTimelinePlayableField(node.DialogueTimeline);
+
+                foreach(VRChoiceData choice in node.ChoiceLists)
+                {
+                    tempNode.AddChoice(choice);
+                }              
                 _graphView.AddElement(tempNode);
             }
         }

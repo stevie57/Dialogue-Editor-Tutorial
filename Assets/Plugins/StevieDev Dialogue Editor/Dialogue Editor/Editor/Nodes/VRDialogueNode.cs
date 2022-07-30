@@ -15,6 +15,8 @@ namespace StevieDev.Dialogue.Editor
         private string _newKeyWordText = string.Empty;
         private string _defaultEmptyChoiceTitle = "Name this Choice";
 
+        public VRDialogueData VRDialogueData { get => _VRDialogueData; set => _VRDialogueData = value; }
+
         public VRDialogueNode() 
         { 
         
@@ -30,28 +32,30 @@ namespace StevieDev.Dialogue.Editor
 
             SetPosition(new Rect(position, _defaultNodeSize));
             _nodeGUID = Guid.NewGuid().ToString();
-            
-            AddInputPort("Input", Port.Capacity.Single);
 
-            Label nodeTitle = new Label();
-            nodeTitle.AddToClassList("Label");
-            nodeTitle.text = "Enter Node Title";
-            mainContainer.Add(nodeTitle);
-            title = _VRDialogueData.NodeTitle.Value;
+            AddInputPort("Input", Port.Capacity.Single);   
+            CreateChoiceButton();
+        }
+
+        public void AddCustomDialogueNodeTitle(Container_String savedNodeTitle)
+        {
+            Label nodeTitleLabel = new Label();
+            nodeTitleLabel.AddToClassList("Label");
+            nodeTitleLabel.text = "Enter Node Title";
+            mainContainer.Add(nodeTitleLabel);
+
+            title = savedNodeTitle.Value;
             TextField nodeTitleTextField = new TextField();
             nodeTitleTextField.RegisterValueChangedCallback(value =>
             {
-                _VRDialogueData.NodeTitle.Value = value.newValue;
+                VRDialogueData.NodeTitle.Value = value.newValue;
                 title = value.newValue;
             });
-            nodeTitleTextField.SetValueWithoutNotify(_VRDialogueData.NodeTitle.Value);
+            nodeTitleTextField.SetValueWithoutNotify(VRDialogueData.NodeTitle.Value);
             mainContainer.Add(nodeTitleTextField);
-            AddTimelinePlayableField();
-            CreateChoiceButton();
-            AddChoice(this._VRDialogueData);
         }
 
-        private void AddTimelinePlayableField()
+        public void AddTimelinePlayableField(PlayableAsset timelineAsset = null)
         {
             Label TimelineLabel = new Label();
             TimelineLabel.AddToClassList("Label");
@@ -62,14 +66,14 @@ namespace StevieDev.Dialogue.Editor
             {
                 objectType = typeof(PlayableAsset),
                 allowSceneObjects = false,
-                value = _VRDialogueData.DialogueTimeline
+                value = VRDialogueData.DialogueTimeline
             };
             timelinePlayableField.RegisterValueChangedCallback(value =>
             {
-                _VRDialogueData.DialogueTimeline = value.newValue as PlayableAsset;
+                VRDialogueData.DialogueTimeline = value.newValue as PlayableAsset;
             });
 
-            timelinePlayableField.SetValueWithoutNotify(_VRDialogueData.DialogueTimeline);
+            timelinePlayableField.SetValueWithoutNotify(VRDialogueData.DialogueTimeline);
             mainContainer.Add(timelinePlayableField);
         }
 
@@ -83,27 +87,33 @@ namespace StevieDev.Dialogue.Editor
 
             btn.clicked += () =>
             {
-                AddChoice(this._VRDialogueData);
+                AddChoice();
             };
 
             titleButtonContainer.Add(btn);
         }
 
-        private void AddChoice(VRDialogueData dialogueData)
+        public void AddChoice(VRChoiceData savedChoiceData = null)
         {
-            Box choiceBox = new Box();
-            
-            // Choice Data
             VRChoiceData newVRChoiceData = new VRChoiceData();
-            dialogueData.ChoiceLists.Add(newVRChoiceData);
 
-            newVRChoiceData.ChoiceName.Value = _defaultEmptyChoiceTitle;
+            if(savedChoiceData != null)
+            {
+                newVRChoiceData.ChoiceName = savedChoiceData.ChoiceName;
+                newVRChoiceData.Keywords.AddRange(savedChoiceData.Keywords);
 
-            // Create Choice Port Data
-            DialogueData_Port newChoicePortData = new DialogueData_Port();
-            newChoicePortData.OutputGuid = _nodeGUID;
-            _VRDialogueData.DialogueData_Ports.Add(newChoicePortData);
+                newVRChoiceData.ChoicePort.InputGuid = savedChoiceData.ChoicePort.InputGuid;
+                newVRChoiceData.ChoicePort.PortGuid = savedChoiceData.ChoicePort.PortGuid;
+                newVRChoiceData.ChoicePort.OutputGuid = savedChoiceData.ChoicePort.OutputGuid;
+            }
+            else
+            {
+                newVRChoiceData.ChoiceName.Value = _defaultEmptyChoiceTitle;
+                newVRChoiceData.ChoicePort.PortGuid = Guid.NewGuid().ToString();
+            }
 
+           _VRDialogueData.ChoiceLists.Add(newVRChoiceData);
+          
             // Create Port
             Port newChoicePort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
             Label choiceTitleLable = new Label();
@@ -111,13 +121,17 @@ namespace StevieDev.Dialogue.Editor
             newChoicePort.contentContainer.Add(choiceTitleLable);
             Label portNameLabel = newChoicePort.contentContainer.Q<Label>("type");
             portNameLabel.AddToClassList("PortName");
+            outputContainer.Add(newChoicePort);
 
+            // Create Choice Container
+            Box choiceBox = new Box();
 
+            // Choice Title Section
             Label TitleFieldLabel = new Label() { text = "Choice Title" };
             TitleFieldLabel.AddToClassList("ChoiceTitleBox");
             choiceBox.Add(TitleFieldLabel);
             TextField choiceTitleTextField = new TextField();
-
+            choiceTitleTextField.value = newVRChoiceData.ChoiceName.Value;
             choiceTitleTextField.RegisterValueChangedCallback(value =>
             {
                 newVRChoiceData.ChoiceName.Value = value.newValue;
@@ -126,12 +140,11 @@ namespace StevieDev.Dialogue.Editor
             choiceTitleTextField.SetValueWithoutNotify(newVRChoiceData.ChoiceName.Value);
             choiceBox.Add(choiceTitleTextField);
 
-            outputContainer.Add(newChoicePort);
-
+            // Keywords Choice Section
             Box KeywordsBox = new Box();
             Label KeywordsLabel = new Label();
-            KeywordsLabel.AddToClassList("Label");
             KeywordsLabel.text = "Current KeyWords:";
+            KeywordsLabel.AddToClassList("Label");
             KeywordsBox.Add(KeywordsLabel);
 
             Box KeywordsBoxList = new Box();
@@ -160,7 +173,7 @@ namespace StevieDev.Dialogue.Editor
                     newKeyword.KeywordEntry.Value = _newKeyWordText;
                     newVRChoiceData.Keywords.Add(newKeyword);
                     _newKeyWordText = String.Empty;
-                    newKeywordField.SetValueWithoutNotify(_newKeyWordText);
+                    //newKeywordField.SetValueWithoutNotify(_newKeyWordText);
                     RefreshKeywordsBox(KeywordsBoxList, newVRChoiceData.Keywords);
                 }
             };
@@ -175,11 +188,10 @@ namespace StevieDev.Dialogue.Editor
             DeleteButton.clicked += () =>
             {
                 // Remove Port Data
-                DialogueData_Port targetData = dialogueData.DialogueData_Ports.Find(data => data.OutputGuid == newChoicePortData.OutputGuid);
-                dialogueData.DialogueData_Ports.Remove(targetData);
+                //DialogueData_Port targetData = dialogueData.DialogueData_Ports.Find(data => data.OutputGuid == newChoicePortData.OutputGuid);
+                //newVRChoiceData.ChoicePort.Remove(targetData);
 
-                // Remove Choice Data
-                dialogueData.ChoiceLists.Remove(newVRChoiceData);
+                
 
                 // Remove edges connected the port
                 IEnumerable<Edge> portEdge = _graphView.edges.ToList().Where(edge => edge.output == newChoicePort);
@@ -191,6 +203,9 @@ namespace StevieDev.Dialogue.Editor
                     _graphView.RemoveElement(edge);
                 }
 
+                // Remove Choice Data
+                _VRDialogueData.ChoiceLists.Remove(newVRChoiceData);
+                
                 // remove output container port
                 this.outputContainer.Remove(newChoicePort);
                 DeleteBox(choiceBox);
@@ -199,6 +214,7 @@ namespace StevieDev.Dialogue.Editor
 
             mainContainer.Add(choiceBox);
             RefreshExpandedState();
+            RefreshPorts();
         }
         
         private void RefreshKeywordsBox(Box keywordBoxList, List<KeywordData> keywordsList)
@@ -237,24 +253,13 @@ namespace StevieDev.Dialogue.Editor
                 }
             }
         }
+
+        override
+        public void LoadValueInToField()
+        {
+
+        }
     }
 
-    public class VRDialogueData : BaseData
-    {
-        public PlayableAsset DialogueTimeline;
-        public Container_String NodeTitle = new Container_String();
-        public List<DialogueData_Port> DialogueData_Ports = new List<DialogueData_Port>();
-        public List<VRChoiceData> ChoiceLists = new List<VRChoiceData>();
-    }
 
-    public class VRChoiceData: BaseData
-    {
-        public Container_String ChoiceName = new Container_String();
-        public List<KeywordData> Keywords = new List<KeywordData>();
-    }
-
-    public class KeywordData
-    {
-        public Container_String KeywordEntry = new Container_String();
-    }
 }

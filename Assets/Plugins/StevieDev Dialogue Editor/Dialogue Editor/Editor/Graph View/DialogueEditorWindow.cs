@@ -129,6 +129,8 @@ namespace StevieDev.Dialogue.Editor
                 DialogueContainerName.text = $"Name: {_currentDialogueContainer.name}";
                 _saveAndLoad.Load(_currentDialogueContainer);
             }
+            else
+                Debug.Log($"There is no dialogue container to load");
         }
 
         /// <summary>

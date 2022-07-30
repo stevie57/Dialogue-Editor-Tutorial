@@ -49,10 +49,8 @@
 	color:red;
 }
 
-
-
 /* ----------------- Name -----------------*/
-.NameColor{
+/*.NameColor{
 	color:green;
 }
 .CharacterName{
@@ -63,7 +61,7 @@
 .TitleNameBox
 {
 	flex-direction: row;	
-}
+}*/
 
 
 /*------------------- Port ------------------*/
@@ -72,19 +70,14 @@
 	display:none;
 }
 
-.PortEmptyTitle{
-	color:red
-}
-
-
 /* ----------------- Text -----------------*/
 
-.TextColor{
+/*.TextColor{
 	color:red;
-}
+}*/
 
 /* ----------------- Images -----------------*/
-.ImageColor{
+/*.ImageColor{
 	color:blue;
 }
 
@@ -107,4 +100,4 @@
 
 .SpriteLeft{
 	margin-right:auto;
-}
+}*/

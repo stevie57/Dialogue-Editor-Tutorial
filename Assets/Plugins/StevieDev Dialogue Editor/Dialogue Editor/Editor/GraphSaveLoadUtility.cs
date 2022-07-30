@@ -308,26 +308,11 @@ namespace StevieDev.Dialogue.Editor
                 {
                     if (edge.output.portName == choice.ChoicePort.PortGuid)
                     {
+                        Debug.Log($"checking edges");
                         newChoiceData.ChoicePort.OutputGuid = (edge.output.node as BaseNode).NodeGUID;
                         newChoiceData.ChoicePort.InputGuid = (edge.input.node as BaseNode).NodeGUID;
                     }
                 }
-
-                //DialogueData_Port portData = new DialogueData_Port();
-
-                //portData.OutputGuid = string.Empty;
-                //portData.InputGuid = string.Empty;
-                ////portData.PortGuid = port.PortGuid;
-                //portData.PortGuid = choice.ChoicePort.PortGuid;
-
-                //foreach (Edge edge in _edges)
-                //{
-                //    if (edge.output.portName == choice.ChoicePort.PortGuid)
-                //    {
-                //        portData.OutputGuid = (edge.output.node as BaseNode).NodeGUID;
-                //        portData.InputGuid = (edge.input.node as BaseNode).NodeGUID;
-                //    }
-                //}
                 newVRDialogueData.ChoiceLists.Add(newChoiceData);
             }
             return newVRDialogueData;
@@ -518,16 +503,16 @@ namespace StevieDev.Dialogue.Editor
                 for (int j = 0; j < connections.Count; j++)
                 {
                     string targetNodeGuid = connections[j].TargetNodeGuid;
-                    BaseNode targetNode = _nodes.First(node => node.NodeGUID == targetNodeGuid);
+                    BaseNode targetInputNode = _nodes.First(node => node.NodeGUID == targetNodeGuid);
 
-                    if (targetNode == null)
+                    if (targetInputNode == null)
                         continue;
 
-                    foreach (Port item in allOutputPorts)
+                    foreach (Port nodeOutput in allOutputPorts)
                     {
-                        if (item.portName == connections[j].BasePortName)
+                        if (nodeOutput.portName == connections[j].BasePortName)
                         {
-                            LinkNodesTogether(item, (Port)targetNode.inputContainer[0]);
+                            LinkNodesTogether(nodeOutput, (Port)targetInputNode.inputContainer[0]);
                         }
                     }
                 }

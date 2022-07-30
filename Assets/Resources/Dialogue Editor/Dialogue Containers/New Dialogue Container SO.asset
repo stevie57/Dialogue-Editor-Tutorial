@@ -12,11 +12,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6795ecbafcc1143a76f966e9cbcf3d, type: 3}
   m_Name: New Dialogue Container SO
   m_EditorClassIdentifier: 
-  NodeLinkDatas: []
-  StartDatas: []
+  NodeLinkDatas:
+  - BaseNodeGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c
+    BasePortName: 61c9f666-61f9-4fd6-b4ae-dc221319a331
+    TargetNodeGuid: 07c91169-535c-4148-9165-324857acb52e
+    TargetPortName: Input
+  - BaseNodeGuid: 2544a90f-bc0f-4c56-8536-48252f669774
+    BasePortName: Output
+    TargetNodeGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c
+    TargetPortName: Input
+  - BaseNodeGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c
+    BasePortName: c97d02b0-c11d-41bc-9051-c60b85e29ae1
+    TargetNodeGuid: 4d94d8f5-5927-47a3-851b-02ece1143a69
+    TargetPortName: Input
+  StartDatas:
+  - NodeGuid: 2544a90f-bc0f-4c56-8536-48252f669774
+    Position: {x: 84, y: 196}
   DialogueDatas: []
   BranchDatas: []
   EventDatas: []
-  EndDatas: []
+  EndDatas:
+  - NodeGuid: 4d94d8f5-5927-47a3-851b-02ece1143a69
+    Position: {x: 788, y: 123}
+    EndNodeType:
+      Value: 1
+  - NodeGuid: 07c91169-535c-4148-9165-324857acb52e
+    Position: {x: 837, y: 331}
+    EndNodeType:
+      Value: 1
   ChoiceDatas: []
-  VRDialogueDatas: []
+  VRDialogueDatas:
+  - NodeGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c
+    Position: {x: 365, y: 123}
+    NodeTitle:
+      Value: Test Node
+    DialogueTimeline: {fileID: 11400000, guid: 891ed3cf20cff2340a228fac0a42c42d, type: 2}
+    ChoiceLists:
+    - ChoiceName:
+        Value: Choice A
+      Keywords:
+      - KeywordEntry:
+          Value: Test1
+      ChoicePort:
+        ID:
+          Value: 0
+        PortGuid: b369fe20-9f8c-4d44-a9d7-ec250f85ed15
+        InputGuid: 
+        OutputGuid: 
+    - ChoiceName:
+        Value: Name this Choice
+      Keywords: []
+      ChoicePort:
+        ID:
+          Value: 0
+        PortGuid: 61c9f666-61f9-4fd6-b4ae-dc221319a331
+        InputGuid: 07c91169-535c-4148-9165-324857acb52e
+        OutputGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c
+    - ChoiceName:
+        Value: Name this Choice
+      Keywords: []
+      ChoicePort:
+        ID:
+          Value: 0
+        PortGuid: c97d02b0-c11d-41bc-9051-c60b85e29ae1
+        InputGuid: 4d94d8f5-5927-47a3-851b-02ece1143a69
+        OutputGuid: 78bcf508-f57a-4e7b-aa5a-ce9334ffc86c

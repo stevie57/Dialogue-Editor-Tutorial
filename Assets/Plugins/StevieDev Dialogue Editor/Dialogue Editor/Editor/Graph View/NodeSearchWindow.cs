@@ -95,7 +95,10 @@ namespace StevieDev.Dialogue.Editor
                     _graphView.AddElement(_graphView.CreateChoiceNode(position));
                     return true;
                 case VRDialogueNode node:
-                    _graphView.AddElement(_graphView.CreateVRDialogueNode(position));
+                    VRDialogueNode newNode = _graphView.CreateVRDialogueNode(position);
+                    newNode.AddCustomDialogueNodeTitle();
+                    newNode.AddTimelinePlayableField();
+                    _graphView.AddElement(newNode);
                     return true;
             }
             return false;

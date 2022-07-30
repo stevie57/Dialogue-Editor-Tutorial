@@ -37,14 +37,14 @@ namespace StevieDev.Dialogue.Editor
             CreateChoiceButton();
         }
 
-        public void AddCustomDialogueNodeTitle(Container_String savedNodeTitle)
+        public void AddCustomDialogueNodeTitle(Container_String savedNodeTitle = null)
         {
             Label nodeTitleLabel = new Label();
             nodeTitleLabel.AddToClassList("Label");
             nodeTitleLabel.text = "Enter Node Title";
             mainContainer.Add(nodeTitleLabel);
 
-            title = savedNodeTitle.Value;
+            title = savedNodeTitle == null ? "Enter Title" : savedNodeTitle.Value;
             TextField nodeTitleTextField = new TextField();
             nodeTitleTextField.RegisterValueChangedCallback(value =>
             {
@@ -116,6 +116,7 @@ namespace StevieDev.Dialogue.Editor
           
             // Create Port
             Port newChoicePort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
+            newChoicePort.portName = newVRChoiceData.ChoicePort.PortGuid;
             Label choiceTitleLable = new Label();
             choiceTitleLable.text = newVRChoiceData.ChoiceName.Value;            
             newChoicePort.contentContainer.Add(choiceTitleLable);
